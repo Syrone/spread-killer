@@ -19,7 +19,9 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "convert-webp": "node convert-to-webp.js"
+    "convert-webp": "node convert-to-webp.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -41,10 +43,12 @@
   },
   "devDependencies": {
     "customize-cra": "^1.0.0",
+    "gh-pages": "^6.3.0",
     "image-webpack-loader": "^8.1.0",
     "react-app-rewired": "^2.2.1",
     "sass": "^1.87.0",
     "sharp-cli": "^5.1.0",
     "webp-loader": "^0.6.0"
-  }
+  },
+  "homepage": "https://syrone.github.io/spread-killer"
 }
