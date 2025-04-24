@@ -1,0 +1,327 @@
+@use "../../styles/mixins" as mixins;
+
+.hero {
+
+	> :global(.container),
+	&-body {
+		display: flex;
+		flex-direction: column;
+	}
+
+	> :global(.container) {
+		min-height: 13.25rem;
+		background-color: var(--theme-light-rgba-80);
+		padding-top: var(--header-height, 0rem);
+		position: relative;
+		z-index: 1;
+
+		@include mixins.transition;
+
+		@include mixins.breakpoint-up(md) {
+			min-height: 17.5rem;
+		}
+	}
+
+	&-background {
+		@include mixins.no-touch;
+		z-index: -1;
+
+		&,
+		> * {
+			position: absolute;
+			inset: 0;
+		}
+
+		> * {
+			background-repeat: no-repeat;
+			background-size: calc(100% - 5rem);
+			background-position: 50% calc(50% + var(--header-height, 0rem) - 5.5rem);
+
+			@include mixins.transition;
+
+			@include mixins.breakpoint-up(md) {
+				background-size: calc(100% + 10rem);
+				background-position: 50% calc(50% + var(--header-height, 0rem) - 4rem);
+			}
+
+			@include mixins.breakpoint-up(xl) {
+				background-size: calc(100% - 12.5rem);
+			}
+
+			&:nth-child(3),
+			&:nth-child(4) {
+				background-size: cover;
+				background-position: bottom center;
+				mask-image: linear-gradient(to top, rgba(0, 0, 0, .5) 0rem, rgba(0, 0, 0, .2) 4rem, rgba(0, 0, 0, .2) 100%);
+				mask-repeat: no-repeat;
+				mask-size: 100% 100%;
+			}
+
+			&:nth-child(2),
+			&:nth-child(4) {
+				opacity: 0;
+			}
+		}
+
+		:global(.dark-theme) & > *:nth-child(1),
+		:global(.dark-theme) & > *:nth-child(3) {
+			opacity: 0;
+		}
+
+		:global(.dark-theme) & > *:nth-child(2),
+		:global(.dark-theme) & > *:nth-child(4) {
+			opacity: 1;
+		}
+	}
+
+	&-bliks {
+		opacity: 0;
+		inset: 0;
+		z-index: -1;
+
+		@include mixins.no-touch;
+		@include mixins.transition;
+
+		&,
+		> * {
+			position: absolute;
+		}
+
+		> * {
+			display: inline-block;
+			background-color: #6bff73;
+			border-radius: 50%;
+
+			&:nth-child(1),
+			&:nth-child(2) {
+				left: calc(50% + 1rem);
+				transform: translate(-50%) rotate(10deg);
+			}
+
+			&:nth-child(1) {
+				width: 12.5rem;
+				height: 6.25rem;
+				background-color: #04c40f;
+				top: calc(50% - 3rem);
+				opacity: 0.2;
+				filter: blur(2rem);
+
+				@include mixins.breakpoint-up(md) {
+					width: 15rem;
+					height: 7.5rem;
+					filter: blur(2.5rem);
+				}
+			}
+
+			&:nth-child(2) {
+				width: 5.75rem;
+				height: 3rem;
+				background-color: #04c40f;
+				top: 50%;
+				opacity: 0.15;
+				filter: blur(1rem);
+
+				@include mixins.breakpoint-up(md) {
+					width: 7.5rem;
+					height: 3.75rem;
+					filter: blur(1.25rem);
+				}
+			}
+
+			&:nth-child(3),
+			&:nth-child(4),
+			&:nth-child(5),
+			&:nth-child(7) {
+				transform: translate(-50%) rotate(18deg);
+			}
+
+			&:nth-child(3) {
+				width: 3rem;
+				height: .75rem;
+				top: 50%;
+				left: calc(50% + 1rem);
+				opacity: .25;
+				filter: blur(.375rem);
+
+				@include mixins.breakpoint-up(md) {
+					width: 3.75rem;
+					height: 1rem;
+					filter: blur(.5rem);
+				}
+			}
+
+			&:nth-child(4),
+			&:nth-child(7),
+			&:last-child {
+				width: 5.75rem;
+				height: .375rem;
+				opacity: .08;
+
+				@include mixins.breakpoint-up(md) {
+					width: 7.5rem;
+					height: .5rem;
+					opacity: .12;
+				}
+			}
+
+			&:nth-child(4),
+			&:nth-child(7) {
+				filter: blur(.5rem);
+				
+				@include mixins.breakpoint-up(md) {
+					filter: blur(.75rem);
+				}
+			}
+
+			&:nth-child(4) {
+				top: calc(50% + 6rem);
+				left: calc(50% + 6rem);
+			}
+
+			&:nth-child(5),
+			&:nth-child(6) {
+				opacity: .03;
+				filter: blur(.875rem);
+				
+				@include mixins.breakpoint-up(md) {
+					opacity: .05;
+					filter: blur(1.125rem);
+				}
+			}
+
+			&:nth-child(5) {
+				width: 21.25rem;
+				height: 1.25rem;
+				top: calc(50% - 1rem);
+				left: calc(50% - 12rem);
+				
+				@include mixins.breakpoint-up(md) {
+					width: 26.25rem;
+					height: 1.5rem;
+				}
+			}
+
+			&:nth-child(6) {
+				width: 25rem;
+				height: 1.5rem;
+				bottom: 5.5rem;
+				right: .875rem;
+				transform: rotate(18deg);
+				
+				@include mixins.breakpoint-up(md) {
+					width: 30.75rem;
+					height: 2rem;
+				}
+			}
+
+			&:nth-child(7) {
+				top: calc(50% - 3rem);
+				left: calc(50% - 3rem);
+			}
+
+			&:last-child {
+				top: 50%;
+				left: 50%;
+				filter: blur(.75rem);
+				
+				@include mixins.breakpoint-up(md) {
+					filter: blur(1rem);
+				}
+			}
+		}
+	}
+
+	:global(.dark-theme) &-bliks {
+		opacity: 1;
+	}
+
+	&-body {
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+		margin-top: calc(var(--header-height, 0rem) * .5 * -1);
+	}
+
+	&-inscription {
+		display: flex;
+		align-items: center;
+		font-family: var(--font-second);
+		font-size: 2.125rem;
+		font-weight: 700;
+		line-height: 1.5;
+		letter-spacing: .025rem;
+
+		@include mixins.breakpoint-up(md) {
+			font-size: 2.625rem;
+		}
+
+		&-picture {
+			display: flex;
+			margin-inline: -.5em .25em;
+			transform: rotate(18deg) translateY(-.25em);
+			position: relative;
+
+			> *:last-child {
+				filter: blur(2.5rem);
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+
+			img {
+				width: auto;
+				height: 3rem;
+				display: block;
+				object-fit: contain;
+
+				@include mixins.breakpoint-up(md) {
+					height: 4rem;
+				}
+			}
+		}
+
+		&-text {
+			position: relative;
+
+			> * {
+				background-clip: text;
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+
+				@include mixins.transition;
+
+				&:first-child {
+					background-image: var(--dark-text-gradient);
+				}
+
+				&:last-child {
+					background-image: var(--light-text-gradient);
+					opacity: 0;
+					@include mixins.no-touch;
+					position: absolute;
+					top: 0;
+					left: 0;
+				}
+			}
+
+			:global(.dark-theme) & > *:first-child {
+				opacity: 0;
+			}
+
+			:global(.dark-theme) & > *:last-child {
+				opacity: 1;
+			}
+		}
+
+		> *:last-child {
+
+			& > *:first-child {
+				background-image: radial-gradient(50% 100% at 5% 30%, rgba(143, 255, 155, 0.4) 0%, rgba(143, 255, 155, 0) 100%), var(--dark-text-gradient)
+			}
+
+			& > *:last-child {
+				background-image: radial-gradient(50% 100% at 5% 30%, rgba(143, 255, 155, .75) 0%, rgba(143, 255, 155, 0) 100%), var(--light-text-gradient);
+			}
+		}
+	}
+}

@@ -1,0 +1,60 @@
+@use "../../styles/mixins" as mixins;
+
+.logo {
+	display: inline-flex;
+	align-items: center;
+	gap: .75rem;
+	font-family: var(--font-second);
+	font-weight: 700;
+	letter-spacing: .0125rem;
+	color: var(--theme-text-color);
+	text-decoration: none;
+
+	img {
+		width: auto;
+		height: 1.875rem;
+		display: block;
+		object-fit: contain;
+
+		@include mixins.breakpoint-up(md) {
+			height: 2.125rem;
+		}
+	}
+
+	&-text {
+		position: relative;
+
+		@include mixins.breakpoint-up(md) {
+			display: none;
+		}
+
+		> * {
+			background-clip: text;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+
+			@include mixins.transition;
+
+			&:first-child {
+				background-image: var(--dark-text-gradient);
+			}
+
+			&:last-child {
+				background-image: var(--light-text-gradient);
+				opacity: 0;
+				@include mixins.no-touch;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		}
+
+		:global(.dark-theme) & > *:first-child {
+			opacity: 0;
+		}
+
+		:global(.dark-theme) & > *:last-child {
+			opacity: 1;
+		}
+	}
+}

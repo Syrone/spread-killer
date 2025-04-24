@@ -1,0 +1,69 @@
+@use "../../styles/mixins" as mixins;
+
+.fasteners {
+	--fasteners-size: .375rem;
+
+	inset: 0;
+
+	@include mixins.no-touch;
+
+	&,
+	> *,
+	> *::before,
+	> *::after {
+		position: absolute;
+		z-index: 1;
+
+		@include mixins.transition;
+	}
+
+	> * {
+		width: var(--width-decoration);
+		top: 0;
+		bottom: 0;
+		
+		@include mixins.breakpoint-up(xl) {
+			border-block: 1px solid var(--theme-border-rgba-10);
+		}
+
+		&::after,
+		&::before {
+			content: '';
+			display: block;
+			width: var(--fasteners-size);
+			height: var(--fasteners-size);
+			background-color: var(--body-bg);
+			border: 1px solid var(--theme-border-rgba-10);
+		}
+
+		&:first-child,
+		&:last-child {
+
+			&::after {
+				top: calc(var(--fasteners-size) / 2 * -1);
+			}
+
+			&::before {
+				bottom: calc(var(--fasteners-size) / 2 * -1);
+			}
+		}
+
+		&:first-child {
+			left: var(--offset-decoration);
+
+			&::after,
+			&::before {
+				right: calc(var(--fasteners-size) / 2 * -1);
+			}
+		}
+
+		&:last-child {
+			right: var(--offset-decoration);
+
+			&::after,
+			&::before {
+				left: calc(var(--fasteners-size) / 2 * -1);
+			}
+		}
+	}
+}

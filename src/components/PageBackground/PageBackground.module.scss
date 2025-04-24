@@ -1,0 +1,43 @@
+@use "../../styles/mixins" as mixins;
+
+.page-background {
+	display: none;
+
+	@include mixins.breakpoint-up(md) {
+		display: block;
+	}
+
+	&,
+	> * {
+		inset: 0;
+		position: absolute;
+		z-index: -1;
+	}
+
+	> * {
+		display: block;
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: bottom center;
+
+		mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0rem, rgba(0, 0, 0, .5) 7rem, rgba(0, 0, 0, .5) 100%);
+		mask-repeat: no-repeat;
+		mask-size: 100% 100%;
+		transform: rotateX(180deg);
+
+		@include mixins.no-touch;
+		@include mixins.transition;
+
+		&:last-child {
+			opacity: 0;
+		}
+	}
+
+	:global(.dark-theme) & > span:first-child {
+		opacity: 0;
+	}
+
+	:global(.dark-theme) & > span:last-child {
+		opacity: 1;
+	}
+}

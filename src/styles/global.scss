@@ -1,0 +1,104 @@
+@use "mixins" as mixins;
+@use "variables";
+
+@import 'reset-css';
+
+@include mixins.font-face("Manrope", "Manrope-Regular", 400, normal);
+@include mixins.font-face("Manrope", "Manrope-Medium", 500, normal);
+@include mixins.font-face("Manrope", "Manrope-SemiBold", 600, normal);
+@include mixins.font-face("Orbitron", "Orbitron-Bold", 700, normal);
+
+* {
+
+  &,
+  &::after,
+  &::before {
+    box-sizing: border-box;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: 20rem;
+  height: 100vh;
+
+  font-family: var(--font-family, sans-serif);
+  font-size: var(--fs-base);
+  font-weight: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--text-color);
+  background-color: var(--body-bg);
+
+  @include mixins.transition;
+
+  @supports (height: 100dvh) {
+    height: 100dvh;
+  }
+}
+
+body,
+#root,
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+#root,
+main {
+	flex: 1;
+}
+
+#root {
+  overflow: hidden;
+  position: relative;
+
+  &::after,
+  &::before {
+
+    @include mixins.breakpoint-up(xl) {
+      content: '';
+      display: block;
+      width: var(--width-decoration);
+      background-color: var(--theme-light-rgba-60);
+      border-inline: 1px solid var(--theme-border-rgba-10);
+      position: absolute;
+      top: 0;
+      bottom: 0;
+  
+      @include mixins.no-touch;
+      @include mixins.transition;
+    }
+  }
+
+  &::after {
+
+    @include mixins.breakpoint-up(xl) {
+      left: var(--offset-decoration);
+    }
+  }
+
+  &::before {
+
+    @include mixins.breakpoint-up(xl) {
+      right: var(--offset-decoration);
+    }
+  }
+}
+
+.container {
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--container-offset);
+}
+
+.srollable-y {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.theme-toggle-transition {
+	@include mixins.transition;
+}

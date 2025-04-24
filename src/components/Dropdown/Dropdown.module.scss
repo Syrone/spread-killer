@@ -1,0 +1,160 @@
+@use "../../styles/mixins" as mixins;
+
+.dropdown {
+	display: inline-flex;
+	position: relative;
+
+	&-button {
+		--_color: var(--theme-text-color);
+		--_bg: var(--theme-border-rgba-10);
+		--_border-width: 1px;
+		--_border-color: var(--theme-border-rgba-10);
+		--_padding: .25rem 1.5rem;
+
+		--_icon-size: .75rem;
+		--_icon-color: var(--gray-color);
+
+		--_bg-hover: var(--theme-border-rgba-14);
+		--_border-color-hover: var(--theme-border-rgba-10);
+		--_icon-color-hover: var(--theme-text-color);
+
+		--_bg-active: var(--theme-border-rgba-10);
+		--_border-color-active: var(--theme-border-rgba-10);
+		--_icon-color-active: var(--theme-success-color);
+
+		max-width: 10rem;
+		min-width: 7.5rem;
+		flex: 1;
+		justify-content: space-between;
+		border: none;
+		border-top: var(--_border-width) solid var(--_border-color);
+		backdrop-filter: blur(.75rem);
+		position: relative;
+
+		&::after,
+		&::before {
+			content: '';
+			width: .125rem;
+			display: inline-block;
+			background-color: var(--body-bg);
+			border-top: 1px solid var(--theme-border-rgba-20);
+			position: absolute;
+			top: .625rem;
+			bottom: .625rem;
+			z-index: 1;
+
+			@include mixins.transition;
+			@include mixins.no-touch;
+		}
+
+		&::after {
+			left: .5rem;
+		}
+
+		&::before {
+			right: .5rem;
+		}
+
+		> *:last-child {
+			transition-property: color;
+			transition-duration: var(--_transition-duration);
+			transition-timing-function: var(--_transition-timing-function);
+		}
+
+		&-text {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		&.is-active {
+
+			@media (hover: hover) {
+
+				&:is(:hover, :focus-visible) {
+					color: var(--_color-hover);
+					background-color: var(--_bg-hover);
+					border-color: var(--_border-color-hover);
+					transform: var(--_transform-hover);
+		
+					.icon {
+						--_color: var(--_icon-color-hover);
+					}
+				}
+			}
+		}
+	}
+
+	&-menu {
+		min-width: 15rem;
+		display: flex;
+		flex-direction: column;
+		gap: .625rem;
+		margin-top: .5rem;
+		border-top: 1px solid var(--theme-border-rgba-10);
+		background-color: var(--theme-dark-color);
+		padding: .625rem;
+		position: absolute;
+		top: 100%;
+		z-index: 1020;
+	}
+
+	&-list {
+		max-height: 14rem;
+		display: flex;
+		flex-direction: column;
+		gap: .25rem;
+	}
+
+	&-item {
+		display: flex;
+		align-items: center;
+
+		&,
+		&-button {
+			flex: 1;
+			justify-content: space-between;
+		}
+
+		&-button {
+			--_border-width: 1px;
+			--_border-color: transparent;
+
+			--_color-hover: var(--gray-color);
+			--_bg-hover: var(--theme-border-rgba-04);
+			--_border-color-hover: var(--theme-border-rgba-04);
+
+			--_bg-active: var(--theme-border-rgba-10);
+			--_border-color-active: var(--theme-border-rgba-10);
+			--_icon-color-active: var(--theme-success-color);
+
+			gap: .75rem;
+			border: none;
+			border-top: var(--_border-width) solid var(--_border-color);
+
+			> *:last-child {
+				opacity: 0;
+				transition-property: color, opacity;
+				transition-duration: var(--_transition-duration);
+				transition-timing-function: var(--_transition-timing-function);
+			}
+
+			@media (hover: hover) {
+
+				&:is(:hover, :focus-visible) {
+
+					> *:last-child {
+						opacity: .5;
+					}
+				}
+			}
+
+			&:is(:active, .is-active) {
+
+				> *:last-child {
+					opacity: 1;
+				}
+			}
+		}
+	}
+}

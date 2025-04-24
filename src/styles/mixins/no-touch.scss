@@ -1,0 +1,4 @@
+@mixin no-touch() {
+	pointer-events: none;
+	user-select: none;
+}

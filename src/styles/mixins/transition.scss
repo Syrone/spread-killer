@@ -1,0 +1,5 @@
+@mixin transition() {
+  transition-property: color, background, border, opacity, transform;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
+}
