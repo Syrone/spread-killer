@@ -9,6 +9,8 @@ import { ReactComponent as Menu } from "../../assets/icons/menu.svg"
 import { ReactComponent as Close } from "../../assets/icons/close.svg"
 import { ReactComponent as ArrowDown } from "../../assets/icons/arrow-down.svg"
 import { ReactComponent as Check } from "../../assets/icons/check.svg"
+import { ReactComponent as Reset } from "../../assets/icons/reset.svg"
+import { ReactComponent as Time } from "../../assets/icons/time.svg"
 import { ReactComponent as Binance } from "../../assets/icons/binance.svg"
 import { ReactComponent as Bingx } from "../../assets/icons/bingx.svg"
 import { ReactComponent as Bitget } from "../../assets/icons/bitget.svg"
@@ -28,6 +30,8 @@ const icons = {
   close: Close,
   arrowDown: ArrowDown,
   check: Check,
+  reset: Reset,
+  time: Time,
   binance: Binance,
   bingx: Bingx,
   bitget: Bitget,

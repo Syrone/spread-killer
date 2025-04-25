@@ -1,0 +1,107 @@
+@use "../../styles/mixins" as mixins;
+
+.switcher {
+	flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: .625rem;
+	font-size: var(--fs-md);
+	font-weight: 500;
+	user-select: none;
+	cursor: pointer;
+
+	&-container {
+		display: flex;
+		position: relative;
+	}
+
+	&-input {
+		width: 2.25rem;
+		height: 1.25rem;
+
+		appearance: none;
+		background-color: var(--theme-border-rgba-10);
+		margin: 0;
+		border: none;
+		border-radius: .125rem;
+		outline: none;
+		cursor: pointer;
+
+		@include mixins.transition;
+
+		&:checked {
+			background-color: var(--theme-success-color);
+
+			~ {
+
+				.switcher-toggle {
+					background-color: var(--light-color);
+					transform: translateX(100%);
+				}
+
+				.switcher-decoration {
+
+					&::after,
+					&::before {
+						border-color: var(--theme-success-color-500);
+						background-color: var(--theme-success-color-500);
+					}
+
+					&::before {
+						opacity: 1;
+					}
+				}
+			}
+		}
+	}
+
+	&-toggle,
+	&-decoration {
+		display: block;
+		position: absolute;
+
+		@include mixins.no-touch;
+	}
+
+	&-toggle {
+		width: calc(50% - .1875rem);
+		background-color: var(--theme-border-rgba-20);
+		border-radius: .125rem;
+		box-shadow: 0 1px 0 0 var(--theme-light-rgba-15);
+		top: .1875rem;
+		left: .1875rem;
+		bottom: .1875rem;
+		z-index: 1;
+
+		@include mixins.transition;
+		transition-property: background, box-shadow, transform;
+	}
+
+	&-decoration {
+		inset: 0;
+
+		&::after,
+		&::before {
+			content: '';
+			display: inline-block;
+			width: .125rem;
+			background-color: var(--theme-light-rgba-60);
+			border-top: 1px solid var(--theme-border-rgba-10);
+			border-radius: 1rem;
+			position: absolute;
+			top: .25rem;
+			bottom: .25rem;
+
+			@include mixins.transition;
+		}
+
+		&::after {
+			right: .375rem;
+		}
+
+		&::before {
+			left: .375rem;
+			opacity: 0;
+		}
+	}
+}

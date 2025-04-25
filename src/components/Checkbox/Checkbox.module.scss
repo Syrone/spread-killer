@@ -1,0 +1,53 @@
+@use "../../styles/mixins" as mixins;
+
+.checkbox {
+	--_size: 1rem;
+	--_rounded: .0625rem;
+
+	display: inline-flex;
+	align-items: center;
+	position: relative;
+
+	&-input {
+		appearance: none;
+		width: var(--_size);
+		height: var(--_size);
+		background-color: transparent;
+		margin: 0;
+		border: 1px solid var(--theme-border-rgba-10);
+		border-radius: var(--_rounded);
+		cursor: pointer;
+
+		@include mixins.transition;
+
+		@media (hover: hover) {
+
+			&:is(:hover, :focus-visible) {
+				background-color: var(--theme-border-rgba-10);
+			}
+		}
+
+		&:checked {
+			background-color: var(--theme-success-color);
+			border-color: var(--theme-success-color);
+
+			~ .checkbox-icon {
+				opacity: 1;
+			}
+		}
+	}
+
+	&-icon {
+		--_size: 100%;
+		--_color: var(--body-bg);
+
+		opacity: 0;
+		padding: .25rem;
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		@include mixins.transition;
+		@include mixins.no-touch;
+	}
+}

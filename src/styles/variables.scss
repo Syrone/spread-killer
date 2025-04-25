@@ -1,3 +1,5 @@
+@use "mixins" as mixins;
+
 :root {
 	--font-family: "Manrope", sans-serif;
 	--font-second: "Orbitron", sans-serif;
@@ -9,7 +11,10 @@
   --fw-base: 400;
   --lh-base: normal;
 
+  --fs-md: .75rem;
+
   --text-color: #000;
+  --light-color: #fff;
   --gray-color: #9fa6b8;
 
   --black-rgba-15: rgba(0, 0, 0, .15);
@@ -33,7 +38,12 @@
   --width-decoration: 4.375rem;
   --offset-decoration: max(calc(var(--width-decoration) * -1), calc((100% - var(--container-width)) / 2) - var(--width-decoration));
   --offset-padding: max(calc(var(--width-decoration) * -1), calc(100% - var(--container-width)) / 2);
+
+  @include mixins.breakpoint-up(md) {
+    --fs-md: .875rem;
+  }
 }
+
 
 .light-theme {
 
@@ -51,6 +61,7 @@
     --theme-border-success: #9dffa6;
   
     --theme-light-rgba-0: rgba(255, 255, 255, 0);
+    --theme-light-rgba-15: rgba(255, 255, 255, .15);
     --theme-light-rgba-60: rgba(255, 255, 255, .60);
     --theme-light-rgba-80: rgba(255, 255, 255, .80);
   
@@ -81,9 +92,14 @@
     --theme-gray-color: #9fa6b8;
     --theme-light-color: #000;
     --theme-success-color: #62ef6f;
+    --theme-success-color-400: #80f68b;
     --theme-success-color-500: #53cb5e;
+    --theme-danger-color: #f42338;
+  
+    --theme-border-success: #9dffa6;
 
     --theme-light-rgba-0: rgba(0, 0, 0, 0);
+    --theme-light-rgba-15: rgba(0, 0, 0, .15);
     --theme-light-rgba-40: rgba(0, 0, 0, .40);
     --theme-light-rgba-60: rgba(0, 0, 0, .60);
     --theme-light-rgba-80: rgba(0, 0, 0, .80);

@@ -4,6 +4,22 @@
 	display: inline-flex;
 	position: relative;
 
+	&.drop-up {
+
+		.dropdown-menu {
+			top: auto;
+			bottom: 100%;
+		}
+	}
+
+	&.drop-left {
+
+		.dropdown-menu {
+			left: auto;
+			right: 0;
+		}
+	}
+
 	&-button {
 		--_color: var(--theme-text-color);
 		--_bg: var(--theme-border-rgba-10);
@@ -56,7 +72,7 @@
 		}
 
 		> *:last-child {
-			transition-property: color;
+			transition-property: color, transform;
 			transition-duration: var(--_transition-duration);
 			transition-timing-function: var(--_transition-timing-function);
 		}
@@ -76,11 +92,11 @@
 					background-color: var(--_bg-hover);
 					border-color: var(--_border-color-hover);
 					transform: var(--_transform-hover);
-		
-					.icon {
-						--_color: var(--_icon-color-hover);
-					}
 				}
+			}
+
+			> *:last-child {
+				transform: rotateX(180deg);
 			}
 		}
 	}
@@ -97,6 +113,14 @@
 		position: absolute;
 		top: 100%;
 		z-index: 1020;
+
+		&-search {
+
+			&,
+			> * {
+				flex: 1;
+			}
+		}
 	}
 
 	&-list {
@@ -120,7 +144,7 @@
 			--_border-width: 1px;
 			--_border-color: transparent;
 
-			--_color-hover: var(--gray-color);
+			--_color-hover: var(--theme-gray-color);
 			--_bg-hover: var(--theme-border-rgba-04);
 			--_border-color-hover: var(--theme-border-rgba-04);
 
@@ -132,7 +156,7 @@
 			border: none;
 			border-top: var(--_border-width) solid var(--_border-color);
 
-			> *:last-child {
+			> *:not(.dropdown-item-checkbox):last-child {
 				opacity: 0;
 				transition-property: color, opacity;
 				transition-duration: var(--_transition-duration);
@@ -143,7 +167,7 @@
 
 				&:is(:hover, :focus-visible) {
 
-					> *:last-child {
+					> *:not(.dropdown-item-checkbox):last-child {
 						opacity: .5;
 					}
 				}
@@ -156,5 +180,46 @@
 				}
 			}
 		}
+
+		&-checkbox {
+			margin-left: auto;
+
+			@include mixins.no-touch;
+		}
+
+		&-label {
+			--_color: var(--theme-text-color);
+
+			--_color-hover: var(--theme-text-color);
+			--_bg-hover: transparent;
+
+			--_color-active: var(--theme-text-color);
+			--_bg-active: var(--theme-border-rgba-10);
+
+			border: var(--_border-width) solid var(--_border-color);
+
+			&:is(:active, .is-active) {
+				border-inline-color: transparent;
+				border-bottom-color: transparent;
+			}
+		}
+	}
+
+	&-empty {
+		font-size: var(--fs-md);
+		text-align: center;
+		padding-block: .75rem;
+	}
+
+	&-buttons {
+		display: flex;
+		gap: .625rem;
+		border-top: 1px solid var(--theme-border-rgba-10);
+		padding-top: .875rem;
+	}
+
+	&-reset,
+	&-apply {
+		flex: 1;
 	}
 }

@@ -1,18 +1,22 @@
 import React from 'react'
+import clsx from 'clsx'
 
 import FastenersCruciform from './FastenersCruciform'
 
 import styles from './Fasteners.module.scss'
 
-const Fasteners = () => {
+const Fasteners = ({ className }) => {
 
 	return (
 		<>
-			<div className={styles['fasteners']}>
+			<div className={clsx(
+				styles['fasteners'],
+				className
+			)}>
 				<span></span>
 				<span></span>
 			</div>
-			<FastenersCruciform />
+			<FastenersCruciform className={className} />
 		</>
 	)
 }

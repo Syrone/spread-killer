@@ -3,7 +3,7 @@
 .btn {
 	--_width: initial;
 	--_height: initial;
-	--_fs: var(--fs-base);
+	--_fs: var(--fs-md);
 	--_fw: 500;
 	--_lh: normal;
 	--_ls: normal;
@@ -108,53 +108,44 @@
 
 .btn-base {
 	--_height: 2.125rem;
-	--_fs: .75rem;
 	--_fw: 500;
 	--_padding: .25rem .625rem;
 	--_icon-size: .75rem;
 
 	@include mixins.breakpoint-up(lg) {
-		--_fs: .875rem;
-
 		--_icon-size: .875rem;
 	}
 }
 
-.btn-primary {
-	--_color: var(--light);
-	--_color-hover: var(--light);
-	--_color-active: var(--light);
-	--_bg: var(--primary);
-	--_bg-hover: var(--primary-500);
-	--_bg-active: var(--primary-500);
-}
-
-.btn-outline-primary {
-	--_color: var(--primary);
-	--_color-hover: var(--light);
-	--_color-active: var(--light);
-	--_bg-hover: var(--primary);
-	--_bg-active: var(--primary);
+.btn-secondary {
+	--_bg: var(--theme-border-rgba-10);
 	--_border-width: 1px;
-	--_border-color: var(--primary);
-	--_border-color-hover: var(--primary);
-	--_border-color-active: var(--primary);
+	--_border-color: var(--theme-border-rgba-10);
+
+	--_bg-hover: var(--theme-border-rgba-14);
+	--_border-color-hover: var(--theme-border-rgba-10);
+
+	--_bg-active: var(--theme-border-rgba-14);
+	--_border-color-active: var(--theme-border-rgba-10);
+
+	border: none;
+	border-top: var(--_border-width) solid var(--_border-color)
 }
 
-.btn-gray-200 {
-	--_color: var(--dark-400);
-	--_color-hover: var(--dark-400);
-	--_color-active: var(--light);
-	--_bg: var(--gray-200);
-	--_bg-hover: var(--gray-300);
-	--_bg-active: var(--dark-400);
-}
+.btn-success {
+	--_color: var(--text-color);
+	--_bg: var(--theme-success-color);
+	--_border-width: 1px;
+	--_border-color: var(--theme-border-success);
+	
+	--_color-hover: var(--text-color);
+	--_bg-hover: var(--theme-success-color-400);
+	--_border-color-hover: var(--theme-border-success);
+	
+	--_color-active: var(--text-color);
+	--_bg-active: var(--theme-success-color-400);
+	--_border-color-active: var(--theme-border-success);
 
-.btn-dark-400 {
-	--_color: var(--light);
-	--_color-hover: var(--primary);
-	--_color-active: var(--light);
-	--_bg: var(--dark-400);
-	--_bg-hover: var(--dark-400);
-	--_bg-active: var(--dark);
+	border: none;
+	border-top: var(--_border-width) solid var(--_border-color)
 }

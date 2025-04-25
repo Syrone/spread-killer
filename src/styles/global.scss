@@ -29,7 +29,7 @@ body {
   font-size: var(--fs-base);
   font-weight: var(--fs-base);
   line-height: var(--lh-base);
-  color: var(--text-color);
+  color: var(--theme-text-color);
   background-color: var(--body-bg);
 
   @include mixins.transition;
@@ -52,8 +52,8 @@ main {
 }
 
 #root {
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
 
   &::after,
   &::before {

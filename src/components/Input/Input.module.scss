@@ -1,0 +1,63 @@
+@use "../../styles/mixins" as mixins;
+
+.input {
+	--_height: 2.125rem;
+
+	appearance: none;
+	width: 100%;
+	height: var(--_height);
+	font-size: var(--fs-md);
+	color: var(--theme-border-rgba-20);
+	background-color: transparent;
+	border: 1px solid var(--theme-border-rgba-10);
+	padding: .25rem 2.25rem .25rem .75rem;
+	outline: none;
+
+	@include mixins.transition;
+
+	&::placeholder {
+		color: var(--theme-border-rgba-20);
+
+		@include mixins.transition;
+	}
+
+	@media (hover: hover) {
+
+		&:hover {
+			color: var(--theme-border-rgba-20);
+			border-color: var(--theme-border-rgba-20);
+		}
+	}
+
+	&:focus-visible {
+		color: var(--theme-text-color);
+		border-color: var(--theme-border-rgba-20);
+		box-shadow: 0 0 0 .125rem var(--theme-border-rgba-10);
+	}
+
+	&-wrapper,
+	&-container {
+		position: relative;
+	}
+
+	&-container {
+		display: flex;
+	}
+
+	&-reset {
+		--_color: var(--theme-danger-color);
+		--_padding: .625rem;
+		--_transform: translateY(-50%);
+
+		--_color-hover: var(--theme-danger-color);
+		--_transform-hover: translateY(-50%);
+
+		--_color-active: var(--theme-danger-color);
+		--_transform-active: translateY(-50%);
+
+		position: absolute;
+		top: 50%;
+		right: 0;
+		z-index: 1;
+	}
+}
