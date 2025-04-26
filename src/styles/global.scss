@@ -48,6 +48,7 @@ main {
 
 #root,
 main {
+  height: 100%;
 	flex: 1;
 }
 
@@ -97,6 +98,57 @@ main {
 .srollable-y {
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.scroll-area {
+  --radix-scroll-area-button-size: 1.25rem;
+
+  &,
+  &-viewport,
+  &-viewport > * {
+    height: 100%;
+  }
+
+  &-scrollbar {
+    --radix-scroll-area-corner-width: .375rem;
+    --radix-scroll-area-corner-height: 0;
+
+    width: var(--radix-scroll-area-corner-width);
+    background-color: var(--theme-light-rgba-40);
+
+    @include mixins.transition;
+
+    @media (hover: hover) {
+      --radix-scroll-area-corner-width: 1.25rem;
+
+      background-color: var(--theme-border-rgba-04);
+      border-top: 1px solid var(--theme-border-rgba-10);
+      cursor: pointer;
+    }
+  }
+
+  &-thumb {
+
+    @media (hover: hover) {
+      cursor: grabbing;
+      padding-block: .25rem;
+    }
+
+    &::after {
+      content: '';
+      height: 100%;
+      display: block;
+      background-color: var(--theme-border-rgba-14);
+
+      @include mixins.transition;
+
+      @media (hover: hover) {
+        margin-inline: .1875rem;
+        border-top: 1px solid var(--theme-border-rgba-10);
+        background-color: var(--theme-border-rgba-08);
+      }
+    }
+  }
 }
 
 .theme-toggle-transition {

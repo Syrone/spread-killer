@@ -1,0 +1,7 @@
+@use "../../styles/mixins" as mixins;
+
+.table-header {
+	box-shadow: var(--theme-shadow);
+
+	@include mixins.transition;
+}

@@ -1,4 +1,4 @@
-export function throttle(callback, delay = 250) {
+export default function throttle(callback, delay = 250) {
   let lastCall = 0
   let timeoutId = null
 

@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 import styles from './Switcher.module.scss'
 
-export default function Switcher({
+const Switcher = ({
 	value = false,
 	disabled = false,
 	checked = false,
@@ -11,7 +11,7 @@ export default function Switcher({
 	onChange,
 	className,
 	...props
-}) {
+}) => {
 	const handleToggle = (e) => onChange && onChange(e.target.checked)
 
 	return (
@@ -40,3 +40,5 @@ export default function Switcher({
 		</label>
 	)
 }
+
+export default React.memo(Switcher)

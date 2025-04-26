@@ -3,7 +3,7 @@
 :root {
 	--font-family: "Manrope", sans-serif;
 	--font-second: "Orbitron", sans-serif;
-  --content-width: 1200px;
+  --content-width: 1160px;
   --container-offset: 1.25rem;
   --container-width: calc(var(--content-width) + (var(--container-offset) * 2));
 
@@ -16,6 +16,7 @@
   --text-color: #000;
   --light-color: #fff;
   --gray-color: #9fa6b8;
+  --link-color: #5383eb;
 
   --black-rgba-15: rgba(0, 0, 0, .15);
   --black-rgba-30: rgba(0, 0, 0, .30);
@@ -30,7 +31,7 @@
 
   --rounded: 1rem;
 
-  --shadow: 0 .25rem 0 0 var(--black-rgba-50);
+  --shadow: 0 .25rem .25rem 0 var(--theme-border-rgba-10);
 
   --transition-duration: 300ms;
   --transition-timing-function: ease-in-out;
@@ -59,13 +60,16 @@
     --theme-danger-color: #f42338;
   
     --theme-border-success: #9dffa6;
+
+    --theme-gray-rgba-50: rgb(87, 92, 105, .50);
+    --theme-gray-rgba-70: rgb(87, 92, 105, .70);
   
     --theme-light-rgba-0: rgba(255, 255, 255, 0);
     --theme-light-rgba-15: rgba(255, 255, 255, .15);
     --theme-light-rgba-60: rgba(255, 255, 255, .60);
     --theme-light-rgba-80: rgba(255, 255, 255, .80);
   
-    --theme-success-rgba-10: rgba(66, 185, 77, 0.05);
+    --theme-success-rgba-05: rgba(66, 185, 77, 0.05);
     --theme-success-rgba-10: rgba(66, 185, 77, 0.10);
     --theme-danger-rgba-05: rgba(244, 35, 56, 0.05);
     --theme-danger-rgba-10: rgba(244, 35, 56, 0.10);
@@ -73,6 +77,7 @@
     --theme-border-rgba-03: rgba(12, 13, 13, .03);
     --theme-border-rgba-04: rgba(12, 13, 13, .04);
     --theme-border-rgba-06: rgba(12, 13, 13, .06);
+    --theme-border-rgba-08: rgba(12, 13, 13, .08);
     --theme-border-rgba-10: rgba(12, 13, 13, .10);
     --theme-border-rgba-14: rgba(12, 13, 13, .14);
     --theme-border-rgba-20: rgba(12, 13, 13, .20);
@@ -80,6 +85,8 @@
     --theme-border-rgba-60: rgba(12, 13, 13, .60);
   
     --body-bg: #fff;
+
+    --theme-shadow: 0 .25rem .25rem 0 rgba(12, 13, 13, .10);
   }
 }
 
@@ -98,18 +105,25 @@
   
     --theme-border-success: #9dffa6;
 
+    --theme-gray-rgba-50: rgba(212, 218, 233, .50);
+    --theme-gray-rgba-70: rgba(212, 218, 233, .70);
+
     --theme-light-rgba-0: rgba(0, 0, 0, 0);
     --theme-light-rgba-15: rgba(0, 0, 0, .15);
     --theme-light-rgba-40: rgba(0, 0, 0, .40);
+    --theme-light-rgba-50: rgba(0, 0, 0, .50);
     --theme-light-rgba-60: rgba(0, 0, 0, .60);
     --theme-light-rgba-80: rgba(0, 0, 0, .80);
 
     --theme-success-rgba-05: rgba(98, 239, 111, 0.05);
     --theme-success-rgba-10: rgba(98, 239, 111, 0.10);
+    --theme-danger-rgba-05: rgba(244, 35, 56, 0.05);
+    --theme-danger-rgba-10: rgba(244, 35, 56, 0.10);
 
     --theme-border-rgba-03: rgba(212, 218, 233, .03);
     --theme-border-rgba-04: rgba(212, 218, 233, .04);
     --theme-border-rgba-06: rgba(212, 218, 233, .06);
+    --theme-border-rgba-08: rgba(212, 218, 233, .08);
     --theme-border-rgba-10: rgba(212, 218, 233, .10);
     --theme-border-rgba-14: rgba(212, 218, 233, .14);
     --theme-border-rgba-20: rgba(212, 218, 233, .20);
@@ -117,5 +131,7 @@
     --theme-border-rgba-60: rgba(212, 218, 233, .60);
 
     --body-bg: #000;
+
+    --theme-shadow: 0 .25rem .25rem 0 rgba(0, 0, 0, .50);
   }
 }

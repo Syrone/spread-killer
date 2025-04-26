@@ -1,5 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
+import { useFloating, offset, flip, shift, autoUpdate } from '@floating-ui/react-dom'
+import * as ScrollArea from '@radix-ui/react-scroll-area'
 
 import debounce from '../../utils/debounce'
 
@@ -22,9 +24,15 @@ const Dropdown = ({
 	const [search, setSearch] = React.useState('')
 	const searchRef = React.useRef(null)
 	const dropdownRef = React.useRef(null)
-	const [dropdownPosition, setDropdownPosition] = React.useState({
-		up: false,
-		left: false,
+	const {
+		x,
+		y,
+		strategy,
+		refs
+	} = useFloating({
+		placement: 'bottom-start',
+		middleware: [offset(8), flip(), shift()],
+		whileElementsMounted: autoUpdate,
 	})
 
 	React.useEffect(() => {
@@ -48,26 +56,6 @@ const Dropdown = ({
 			document.removeEventListener('mousedown', handleClickOutside)
 		}
 	}, [])
-
-	React.useLayoutEffect(() => {
-		isOpen && checkDropdownPosition()
-	}, [isOpen])
-
-	const checkDropdownPosition = () => {
-		if (!dropdownRef.current) return
-	
-		const rect = dropdownRef.current.getBoundingClientRect()
-	
-		const spaceBelow = window.innerHeight - rect.bottom
-		const spaceAbove = rect.top
-		const spaceRight = window.innerWidth - rect.left
-		const spaceLeft = rect.right
-	
-		setDropdownPosition({
-			up: spaceBelow < 250 && spaceAbove > spaceBelow,
-			left: spaceRight < 300 && spaceLeft > spaceRight
-		})
-	}
 
 	const debouncedSearch = React.useMemo(() =>
 		debounce((value) => setSearch(value), 300),
@@ -125,12 +113,9 @@ const Dropdown = ({
 	return (
 		<div
 			ref={dropdownRef}
-			className={clsx(
-				styles['dropdown'],
-				dropdownPosition.up && styles['drop-up'],
-				dropdownPosition.left && styles['drop-left']
-			)}>
+			className={styles['dropdown']}>
 			<Button
+				ref={refs.setReference}
 				className={clsx(
 					styles['dropdown-button'],
 					isOpen && styles['is-active']
@@ -144,83 +129,115 @@ const Dropdown = ({
 				</span>
 			</Button>
 
-			{isOpen && (
-				<div className={styles['dropdown-menu']}>
-					{multiple && (
-						<Input
-							ref={searchRef}
-							className={styles['dropdown-menu-search']}
-							placeholder='Поиск биржи'
-							value={searchInput}
-							onChange={(e) => {
-								setSearchInput(e.target.value)
-								debouncedSearch(e.target.value)
-							}} />
-					)}
+			{
+				isOpen && (
+					<div
+						ref={refs.setFloating}
+						className={clsx(
+							styles['dropdown-menu'],	
+						)}
+						style={{
+							position: strategy,
+							top: y ?? '',
+							left: x ?? '',
+						}}>
+						{multiple && (
+							<Input
+								ref={searchRef}
+								className={styles['dropdown-menu-search']}
+								placeholder='Поиск биржи'
+								value={searchInput}
+								onChange={(e) => {
+									setSearchInput(e.target.value)
+									debouncedSearch(e.target.value)
+								}} />
+						)}
 
-					<ul className={clsx(
-						styles['dropdown-list'],
-						'srollable-y'
-					)}>
-						{
-							filtered.length > 0 ? (
-								filtered.map(option => (
-									<li
-										key={option.label}
-										className={styles['dropdown-item']}>
-										<Button
-											className={clsx(
-												styles['dropdown-item-button'],
-												styles['dropdown-item-label'],
-												option.selected && styles['is-active']
-											)}
-											size="base"
-											icon={!multiple && 'check'}
-											isActive={option.selected}
-											onClick={() => handleSelect(option)}>
-											{option.icon && <Icon name={option.icon} />}
-											<span>{option.label}</span>
-											{
-												multiple && (
-													<Checkbox
-														className={styles['dropdown-item-checkbox']}
-														checked={option.selected}
-													/>
-												)
-											}
-										</Button>
-									</li>
-								))
-							) : (
-								<li className={styles['dropdown-empty']}>
-									Ничего не найдено
-								</li>
-							)
-						}
-					</ul>
+						<ScrollArea.Root type='auto'
+							className={clsx(
+								styles['dropdown-scroll-area'],
+								'scroll-area'
+							)}
+						>
+							<ScrollArea.Viewport
+								className={clsx(
+									styles['dropdown-scroll-viewport'],
+									'scroll-area-viewport'
+								)}
+							>
+								<ul className={styles['dropdown-list']}>
+									{
+										filtered.length > 0 ? (
+											filtered.map(option => (
+												<li
+													key={option.label}
+													className={styles['dropdown-item']}>
+													<Button
+														className={clsx(
+															styles['dropdown-item-button'],
+															multiple && styles['dropdown-item-label'],
+															option.selected && styles['is-active']
+														)}
+														size="base"
+														icon={!multiple && 'check'}
+														isActive={option.selected}
+														onClick={() => handleSelect(option)}>
+														{option.icon && <Icon name={option.icon} />}
+														<span>{option.label}</span>
+														{
+															multiple && (
+																<Checkbox
+																	className={styles['dropdown-item-checkbox']}
+																	checked={option.selected}
+																/>
+															)
+														}
+													</Button>
+												</li>
+											))
+										) : (
+											<li className={styles['dropdown-empty']}>
+												Ничего не найдено
+											</li>
+										)
+									}
+								</ul>
+							</ScrollArea.Viewport>
 
-					{multiple && (
-						<div className={styles['dropdown-buttons']}>
-							<Button
-								className={styles['dropdown-reset']}
-								typestyle={'secondary'}
-								size={'base'}
-								onClick={handleReset}>
-								Сбросить
-							</Button>
-							<Button
-								className={styles['dropdown-apply']}
-								typestyle={'success'}
-								size={'base'}
-								onClick={handleApply}>
-								Применить
-							</Button>
-						</div>
-					)}
-				</div>
-			)}
+							<ScrollArea.Scrollbar className={clsx(
+								styles['dropdown-scroll-scrollbar'],
+								'scroll-area-scrollbar'
+							)} orientation='vertical' style={{ position: 'relative' }}>
+								<ScrollArea.Thumb className={clsx(
+									styles['dropdown-scroll-thumb'],
+									'scroll-area-thumb'
+								)} />
+							</ScrollArea.Scrollbar>
+						</ScrollArea.Root>
+
+						{multiple && (
+							<div className={styles['dropdown-buttons']}>
+								<Button
+									className={styles['dropdown-reset']}
+									typestyle={'secondary'}
+									size={'base'}
+									onClick={handleReset}>
+									Сбросить
+								</Button>
+								<Button
+									className={styles['dropdown-apply']}
+									typestyle={'success'}
+									size={'base'}
+									onClick={handleApply}>
+									Применить
+								</Button>
+							</div>
+						)}
+					</div>
+				)
+			}
 		</div>
 	)
 }
 
-export default Dropdown
+export default React.memo(Dropdown)

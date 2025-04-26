@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 const THEME_KEY = "theme"
 
@@ -10,7 +10,7 @@ export function useTheme() {
 
   const [theme, setTheme] = useState(getInitial)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle('dark-theme', theme === 'dark');
     root.classList.toggle('light-theme', theme === 'light');

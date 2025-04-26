@@ -1,0 +1,44 @@
+@use "../../styles/mixins" as mixins;
+
+.popover {
+	display: inline-flex;
+
+	&-button {
+		--_color: var(--theme-gray-rgba-70);
+
+		--_icon-size: .75rem;
+	}
+
+	&-body {
+		max-width: 13.75rem;
+		font-size: var(--fs-md);
+		line-height: 1.5;
+		color: var(--theme-text-color);
+		background-color: var(--theme-dark-color);
+		text-align: center;
+		border-top: 1px solid var(--theme-border-rgba-10);
+		padding: .875rem;
+		z-index: 1030;
+
+		@include mixins.transition;
+
+		@include mixins.breakpoint-up(md) {
+			font-size: .8125rem;
+		}
+	}
+
+	&-arrow {
+		display: inline-block;
+		width: .5rem;
+		height: .5rem;
+		background-color: inherit;
+		border-top: 1px solid var(--theme-border-rgba-10);
+		border-right: 1px solid var(--theme-border-rgba-10);
+		position: absolute;
+		left: 50%;
+		bottom: calc(100% - .25rem);
+		transform: translateX(-50%) rotate(-45deg);
+
+		@include mixins.transition;
+	}
+}

@@ -1,0 +1,48 @@
+@use "../../styles/mixins" as mixins;
+
+.columnheader {
+	height: var(--_header-height);
+	display: flex;
+	align-items: center;
+	padding-inline: var(--container-offset);
+	font-size: .75rem;
+	font-weight: 500;
+	color: var(--theme-gray-rgba-70);
+	padding-block: .25rem;
+
+	@include mixins.transition;
+
+	&-info,
+	&-sort {
+		display: flex;
+		align-items: center;
+	}
+
+	&,
+	&-info {
+		gap: .5rem;
+	}
+
+	&-info {
+		flex: 1;
+	}
+
+	&-sort {
+
+		&-up,
+		&-down {
+			--_color: var(--theme-gray-rgba-50);
+			--_padding: .5rem .125rem;
+
+			--_icon-size: .625rem;
+		}
+
+		&-up {
+			--_transform: rotate(180deg);
+
+			--_transform-hover: rotate(180deg);
+
+			--_transform-active: rotate(180deg);
+		}
+	}
+}

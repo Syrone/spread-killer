@@ -1,0 +1,88 @@
+@use "../../styles/mixins" as mixins;
+
+.table {
+
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+
+	&-section {
+		--_header-height: 3rem;
+
+		flex: 1;
+		overflow: hidden;
+
+		> :global(.container) {
+			height: 100%;
+			padding-inline: 0;
+		}
+
+		:global {
+
+			.scroll-area {
+
+				&-scrollbar {
+					margin-top: var(--_header-height);
+
+					@media (hover: hover) {
+						margin-block: calc(var(--radix-scroll-area-button-size) * 2 + .25rem);
+						margin-right: calc((var(--width-decoration) + var(--radix-scroll-area-corner-width)) / 2 * -1);
+					}
+				}
+
+				&-button {
+					--_width: var(--radix-scroll-area-button-size);
+					--_height: var(--radix-scroll-area-button-size);
+					--_padding: .25rem;
+
+					--_icon-size: 100%;
+
+					display: none;
+					margin-right: calc((var(--width-decoration) + var(--radix-scroll-area-button-size)) / 2 * -1);
+					position: absolute;
+					right: 0;
+
+					@media (hover: hover) {
+						display: inline-flex;
+					}
+
+					&.up {
+						top: 1.25rem;
+
+						> * {
+							transform: rotate(180deg);
+						}
+					}
+
+					&.down {
+						--_transform: rotateY(180deg);
+
+						--_transform-hover: rotateY(180deg);
+
+						--_transform-active: rotateY(180deg);
+
+						bottom: 1.25rem;
+					}
+				}
+			}
+		}
+	}
+
+	&-body {
+		flex: 1;
+		padding-top: var(--_header-height);
+	}
+}
+
+.row {
+	display: grid;
+	grid-template-columns: 8.125rem minmax(15.625rem, 1fr) minmax(11.25rem, 12.5rem) minmax(11.25rem, 12.5rem) 10.625rem 10.625rem;
+	background-color: var(--body-bg);
+	border-bottom: 1px solid var(--theme-border-rgba-10);
+
+	@include mixins.transition;
+
+	&.even {
+		background-color: var(--theme-border-rgba-03);
+	}
+}

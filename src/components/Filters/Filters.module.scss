@@ -2,6 +2,7 @@
 
 .filters {
 	position: relative;
+	z-index: 2;
 
 	&::after,
 	&::before {
@@ -43,11 +44,49 @@
 		@include mixins.transition;
 	}
 
-	&-body {
+	&-body,
+	&-block {
 		display: flex;
+		gap: 1rem .625rem;
+		
+		@include mixins.breakpoint-up(md) {
+			gap: 1rem;
+		}
+	}
+
+	&-body {
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 1rem;
+	}
+
+	&-search {
+		max-width: 7.5rem;
+
+		@include mixins.breakpoint-up(lg) {
+			max-width: initial;
+		}
+	}
+
+	&-switcher {
+
+		&::before {
+			content: '';
+			width: .25rem;
+			height: calc(.25rem - 1px);
+			flex-shrink: 0;
+			display: block;
+			align-self: center;
+			margin-inline: .375rem;
+			border-top: 1px solid var(--theme-border-rgba-10);
+			background-color: var(--theme-border-rgba-10);
+
+			@include mixins.transition;
+			@include mixins.no-touch;
+
+			@include mixins.breakpoint-up(md) {
+				margin-inline: 0 .375rem;
+			}
+		}
 	}
 
 	&-period {
@@ -60,8 +99,33 @@
 		margin-left: auto;
 		opacity: .5;
 
+		@include mixins.no-touch;
+
 		&-icon {
 			--_size: .875rem;
 		}
+	}
+}
+
+.input-number {
+	display: flex;
+	gap: .125rem;
+
+	&-input {
+		max-width: 3rem;
+
+		@include mixins.breakpoint-up(lg) {
+			max-width: 3.75rem;
+		}
+
+		&,
+		> * {
+			flex: 1;
+		}
+	}
+
+	&-button {
+		--_width: 2.125rem;
+		--_padding: .25rem;
 	}
 }

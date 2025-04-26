@@ -1,6 +1,6 @@
 import React from "react"
 
-import { throttle } from "../../utils/throttle"
+import throttle from "../../utils/throttle"
 
 import Logo from '../Logo/Logo'
 import Button from '../Buttons/Button'

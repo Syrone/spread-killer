@@ -1,0 +1,15 @@
+<svg viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 16H4V20H0V16Z" />
+<path d="M4 0H8V4H4V0Z" />
+<path d="M4 12H8V16H4V12Z" />
+<path d="M8 0H12V4H8V0Z" />
+<path d="M8 4H12V8H8V4Z" />
+<path d="M8 8H12V12H8V8Z" />
+<path d="M12 0H16V4H12V0Z" />
+<path d="M12 4H16V8H12V4Z" />
+<path d="M12 8H16V12H12V8Z" />
+<path d="M16 0H20V4H16V0Z" />
+<path d="M16 4H20V8H16V4Z" />
+<path d="M16 8H20V12H16V8Z" />
+<path d="M16 12H20V16H16V12Z" />
+</svg>

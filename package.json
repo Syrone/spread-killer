@@ -3,14 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@floating-ui/react": "^0.27.8",
+    "@floating-ui/react-dom": "^2.1.2",
+    "@radix-ui/react-scroll-area": "^1.2.6",
+    "@reduxjs/toolkit": "^2.7.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.9.0",
     "clsx": "^2.1.1",
     "react": "^19.1.0",
+    "react-content-loader": "^7.0.2",
     "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0",
     "react-scripts": "5.0.1",
+    "react-virtuoso": "^4.12.6",
     "reset-css": "^5.0.2",
     "web-vitals": "^2.1.4"
   },
@@ -19,7 +27,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "convert-webp": "node convert-to-webp.js"
+    "convert-webp": "node convert-to-webp.js",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -48,5 +57,6 @@
     "sharp-cli": "^5.1.0",
     "webp-loader": "^0.6.0"
   },
+  "proxy": "https://nine-sells-mall-notices.trycloudflare.com",
   "homepage": "https://syrone.github.io/spread-killer"
 }

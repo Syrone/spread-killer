@@ -13,6 +13,7 @@ const Input = ({
   label,
   error,
   className,
+	hasReset = true,
 	ref,
   ...props
 }) => {
@@ -37,12 +38,12 @@ const Input = ({
 					placeholder={placeholder}
 					className={clsx(
 						styles['input'],
-						value && styles['input-value'],
+						hasReset && styles['input-has-reset'],
 						error && styles['input-error']
 					)}
 					{...props}
 				/>
-				{value && (
+				{value && hasReset && (
 					<Button
 						className={styles['input-reset']}
 						icon={'reset'}
