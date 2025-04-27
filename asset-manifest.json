@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/spread-killer/static/css/main.9be01201.css",
-    "main.js": "/spread-killer/static/js/main.38c00596.js",
+    "main.js": "/spread-killer/static/js/main.72f9be96.js",
     "static/media/smoke-dark-theme.webp": "/spread-killer/static/media/smoke-dark-theme.d4455332cfe7954a3068.webp",
     "static/media/smoke-light-theme.webp": "/spread-killer/static/media/smoke-light-theme.4fea9954f7c42c1c4d12.webp",
     "static/media/logo.webp": "/spread-killer/static/media/logo.cdc4da913cbee698dc57.webp",
@@ -37,10 +37,10 @@
     "static/media/check.svg": "/spread-killer/static/media/check.08ce831ff290e5a1d003d33378bdff87.svg",
     "static/media/minus.svg": "/spread-killer/static/media/minus.68f4efc6146297354f9ed43b17f99f32.svg",
     "main.9be01201.css.map": "/spread-killer/static/css/main.9be01201.css.map",
-    "main.38c00596.js.map": "/spread-killer/static/js/main.38c00596.js.map"
+    "main.72f9be96.js.map": "/spread-killer/static/js/main.72f9be96.js.map"
   },
   "entrypoints": [
     "static/css/main.9be01201.css",
-    "static/js/main.38c00596.js"
+    "static/js/main.72f9be96.js"
   ]
 }
