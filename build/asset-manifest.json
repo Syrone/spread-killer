@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/spread-killer/static/css/main.9c5c2807.css",
-    "main.js": "/spread-killer/static/js/main.a8c141fc.js",
+    "main.css": "/spread-killer/static/css/main.b685fc30.css",
+    "main.js": "/spread-killer/static/js/main.0c5ec66d.js",
     "static/media/smoke-dark-theme.webp": "/spread-killer/static/media/smoke-dark-theme.d4455332cfe7954a3068.webp",
     "static/media/smoke-light-theme.webp": "/spread-killer/static/media/smoke-light-theme.4fea9954f7c42c1c4d12.webp",
     "static/media/logo.webp": "/spread-killer/static/media/logo.cdc4da913cbee698dc57.webp",
@@ -10,8 +10,8 @@
     "static/media/Manrope-Regular.woff2": "/spread-killer/static/media/Manrope-Regular.2e6d3d21cb34c92a8f7a.woff2",
     "static/media/Manrope-Medium.woff2": "/spread-killer/static/media/Manrope-Medium.0b33f41eb1974d58060a.woff2",
     "static/media/Orbitron-Bold.woff2": "/spread-killer/static/media/Orbitron-Bold.3f6e97659b3ebfd3991c.woff2",
-    "static/media/lbank.svg": "/spread-killer/static/media/lbank.dce65a564eccc2f5d3f99305e0308ebd.svg",
     "static/media/bybit.svg": "/spread-killer/static/media/bybit.299447bea41b8ddaf38e6eb35386d14d.svg",
+    "static/media/lbank.svg": "/spread-killer/static/media/lbank.3d7d8ce921f6c69e16303efe00ac47e1.svg",
     "static/media/figure-dark-theme.svg": "/spread-killer/static/media/figure-dark-theme.6b4b3fe6ce3e36d052ef8542b265dd66.svg",
     "static/media/figure-light-theme.svg": "/spread-killer/static/media/figure-light-theme.4326ef12e914970a593e7cbd995c8d48.svg",
     "static/media/mexc.svg": "/spread-killer/static/media/mexc.14bdce473f619aece7937681f97b70ae.svg",
@@ -36,11 +36,11 @@
     "static/media/menu.svg": "/spread-killer/static/media/menu.463e4b3bcde5bcb34d69dcc6289ca71e.svg",
     "static/media/check.svg": "/spread-killer/static/media/check.08ce831ff290e5a1d003d33378bdff87.svg",
     "static/media/minus.svg": "/spread-killer/static/media/minus.68f4efc6146297354f9ed43b17f99f32.svg",
-    "main.9c5c2807.css.map": "/spread-killer/static/css/main.9c5c2807.css.map",
-    "main.a8c141fc.js.map": "/spread-killer/static/js/main.a8c141fc.js.map"
+    "main.b685fc30.css.map": "/spread-killer/static/css/main.b685fc30.css.map",
+    "main.0c5ec66d.js.map": "/spread-killer/static/js/main.0c5ec66d.js.map"
   },
   "entrypoints": [
-    "static/css/main.9c5c2807.css",
-    "static/js/main.a8c141fc.js"
+    "static/css/main.b685fc30.css",
+    "static/js/main.0c5ec66d.js"
   ]
 }

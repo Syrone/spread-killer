@@ -17,6 +17,7 @@
     "react-content-loader": "^7.0.2",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
+    "react-router-dom": "^7.5.2",
     "react-scripts": "5.0.1",
     "react-virtuoso": "^4.12.6",
     "reset-css": "^5.0.2",

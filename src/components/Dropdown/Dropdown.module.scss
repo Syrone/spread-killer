@@ -138,21 +138,6 @@
 		&-viewport {
 			flex: 1;
 		}
-
-		&-scrollbar{
-			--radix-scroll-area-corner-width: .375rem;
-
-			background-color: var(--theme-light-rgba-40);
-		}
-
-		&-thumb {
-			padding-block: .0625rem;
-
-			&::after {
-				background-color: var(--theme-border-rgba-14);
-				margin-inline: .0625rem;
-			}
-		}
 	}
 
 	&-list {

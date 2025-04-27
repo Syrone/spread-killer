@@ -1,6 +1,18 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import {
+	toggleExchange, setMValue,
+	setSearch, setDiffIntervals
+} from '../../redux/filters/slice'
+
+import { selectNextFetchAt } from '../../redux/items/selectors'
+import { selectFilters } from '../../redux/filters/selectors'
+import { selectNow } from '../../redux/clock/selectors'
+
+import { useElementHeightVar } from '../../hooks/useElementHeightVar'
 
 import throttle from '../../utils/throttle'
+import debounce from '../../utils/debounce'
 
 import Fasteners from '../Fasteners/Fasteners'
 import Icon from '../Icon/Icon'
@@ -11,10 +23,10 @@ import Switcher from '../Switcher/Switcher'
 
 import styles from './Filters.module.scss'
 
-const DROPDOWN_STRATEGY = [
-	{ label: 'long+short:funding', selected: true },
-	{ label: 'long+short:spread', selected: false },
-]
+// const DROPDOWN_STRATEGY = [
+// 	{ label: 'long+short:funding', selected: false },
+// 	{ label: 'long+short:spread', selected: false },
+// ]
 
 const DROPDOWN_EXCHANGES = [
 	{ icon: 'binance', label: 'Binance', selected: false },
@@ -31,16 +43,23 @@ const DROPDOWN_EXCHANGES = [
 ]
 
 const Filters = () => {
+	const dispatch = useDispatch()
+	const { exchanges, mValue, search, diffIntervals } = useSelector(selectFilters)
+	const nextFetchAt = useSelector(selectNextFetchAt)
+	const now = useSelector(selectNow)
+	const secondsLeft = nextFetchAt
+		? Math.max(nextFetchAt - now, 0)
+		: 15
 
 	const [searchState, setSearchState] = React.useState({
-		value: '',
+		searchValue: search,
+		searchMValue: mValue,
 		placeholder: window.innerWidth > 992 ? 'Поиск криптовалюты' : 'Поиск'
 	})
-	const [mInput, setMInput] = React.useState('')
 	const [switcherState, setSwitcherState] = React.useState({
-		value: true,
 		text: window.innerWidth > 992 ? 'Разные интервалы' : '+ / -'
 	})
+	const filtersRef = useElementHeightVar('--filters-height')
 
 	const handleResizeThrottled = React.useCallback(() =>
 		throttle(() => {
@@ -60,31 +79,58 @@ const Filters = () => {
 		return () => window.removeEventListener('resize', handleResizeThrottled)
 	}, [handleResizeThrottled])
 
+	const debouncedSetM = React.useMemo(
+		() => debounce((value) => {
+			const numeric = value.replace(/\D/g, '')
+			dispatch(setMValue(numeric))
+		}, 300),
+		[dispatch]
+	)
+
+	const debouncedSearch = React.useMemo(
+		() => debounce((value) => {
+			dispatch(setSearch(value))
+		}, 300),
+		[dispatch]
+	)
+
 	return (
-		<section className={styles['filters']}>
-			<Fasteners />
+		<section ref={filtersRef} className={styles['filters']}>
+			<Fasteners hasLine={true} hasFill={true} />
 			<div className="container">
 				<div className={styles['filters-body']}>
-					<Dropdown
+					{/* <Dropdown
 						options={DROPDOWN_STRATEGY}
-						placeholder='Стратегия' />
+						placeholder='Стратегия'
+						selected={strategy}
+						onChange={value => dispatch(setStrategy(value))} /> */}
 					<Dropdown
 						options={DROPDOWN_EXCHANGES}
 						multiple={true}
-						placeholder='Биржи' />
+						placeholder='Биржи'
+						selected={exchanges}
+						onChange={value => dispatch(toggleExchange(value))} />
 
 					<div className={styles['input-number']}>
 						<Input
 							className={styles['input-number-input']}
 							placeholder='0'
 							hasReset={false}
-							value={mInput}
-							onChange={(e) => setMInput(e.target.value.replace(/\D/g, ''))} />
+							value={searchState.searchMValue}
+							maxLength={2}
+							onChange={(e) => {
+								const value = e.target.value.replace(/\D/g, '')
+								setSearchState(prev => ({
+									...prev,
+									searchMValue: value
+								}))
+								debouncedSetM(value)
+							}} />
 						<Button
 							size={'base'}
 							typestyle={'secondary'}
 							className={styles['input-number-button']}>
-							M
+							H
 						</Button>
 					</div>
 
@@ -92,18 +138,25 @@ const Filters = () => {
 						<Input
 							className={styles['filters-search']}
 							placeholder={searchState.placeholder}
-							value={searchState.value}
-							onChange={(e) => setSearchState(prev => ({ ...prev, value: e.target.value }))} />
+							value={searchState.searchValue}
+							onChange={(e) => {
+								const value = e.target.value
+								setSearchState(prev => ({
+									...prev,
+									searchValue: value
+								}))
+								debouncedSearch(value)
+							}} />
 
 						<Switcher
 							className={styles['filters-switcher']}
 							text={switcherState.text}
-							checked={switcherState.value}
-							onChange={(checked) => setSwitcherState(prev => ({ ...prev, value: checked }))} />
+							checked={diffIntervals}
+							onChange={(checked) => dispatch(setDiffIntervals(checked))} />
 					</div>
 
 					<div className={styles['filters-period']}>
-						<span>15s</span>
+						<span>{secondsLeft}s</span>
 						<Icon
 							className={styles['filters-period-icon']}
 							name={'time'} />

@@ -5,39 +5,38 @@ import api from '../../api'
 const initialState = {
 	items: [],
 	status: 'loading',
+	nextFetchAt: null
 }
+
+export const fetchItems = createAsyncThunk(
+	'items/fetchItems',
+	async () => {
+		const { data } = await api.get('/generate-data/')
+		return data
+	},
+)
 
 export const itemsSlice = createSlice({
 	name: 'items',
 	initialState,
 	reducers: {
-		setItems(state, action) {
-			state.items = action.payload
-		},
+		setNextFetchAt(state, { payload }) {
+			state.nextFetchAt = payload
+		}
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchItems.pending, (state) => {
-			state.prevCount = state.items.length
 			state.status = 'loading'
-    })
-		builder.addCase(fetchItems.fulfilled, (state, action) => {
-      state.items = action.payload
+		})
+		builder.addCase(fetchItems.fulfilled, (state, { payload }) => {
 			state.status = 'success'
-    })
+			state.items = payload;
+		})
 		builder.addCase(fetchItems.rejected, (state) => {
 			state.status = 'error'
-    })
+		})
 	},
 })
 
-export const fetchItems = createAsyncThunk(
-  'items/fetchItems',
-  async () => {
-    const { data } = await api.get('/generate-data/')
-    return data
-  },
-)
-
-export const { setItems } = itemsSlice.actions
-
+export const { setNextFetchAt } = itemsSlice.actions
 export default itemsSlice.reducer

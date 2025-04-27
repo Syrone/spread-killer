@@ -29,3 +29,14 @@ $breakpoints: (
     @warn "Breakpoint #{$size} не найден в карте \$breakpoints!";
   }
 }
+
+@mixin breakpoint-hover-up($size) {
+  $value: map.get($breakpoints, $size);
+  @if $value {
+    @media (min-width: #{$value - 0.02px}) and (hover: hover) {
+      @content;
+    }
+  } @else {
+    @warn "Breakpoint #{$size} не найден в карте \$breakpoints!";
+  }
+}

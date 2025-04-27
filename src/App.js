@@ -1,23 +1,22 @@
 import React from 'react'
+import { Routes, Route } from 'react-router-dom'
 
-import Header from "./components/Header/Header"
-import Hero from "./components/Hero/Hero"
-import Filters from "./components/Filters/Filters"
-import Table from "./components/Table/Table"
-import PageBackground from "./components/PageBackground/PageBackground"
+import MainLayout from './layouts/MainLayout'
+import Home from "./pages/Home"
+import Staking from "./pages/Staking"
+import Launchpool from "./pages/Launchpool"
+import NotFound from "./pages/NotFound"
 
 export default function App() {
 
   return (
-    <>
-      <Header />
-      <main>
-        <Hero />
-        <Filters />
-        <Table />
-      </main>
-
-      <PageBackground />
-    </>
+    <Routes>
+      <Route path={'/'} element={<MainLayout />}>
+        <Route path={''} element={<Home />} />
+        <Route path={'/staking'} element={<Staking />} />
+        <Route path={'/launchpool'} element={<Launchpool />} />
+        <Route path={'*'} element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }

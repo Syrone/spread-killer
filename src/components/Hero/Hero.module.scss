@@ -1,6 +1,8 @@
 @use "../../styles/mixins" as mixins;
 
 .hero {
+	position: relative;
+	z-index: 3;
 
 	> :global(.container),
 	&-body {
@@ -11,6 +13,7 @@
 	> :global(.container) {
 		min-height: 13.25rem;
 		background-color: var(--theme-light-rgba-80);
+		border-bottom: 1px solid var(--theme-border-rgba-10);
 		padding-top: var(--header-height, 0rem);
 		position: relative;
 		z-index: 1;

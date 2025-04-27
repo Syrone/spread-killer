@@ -9,11 +9,14 @@ import svgFigureLightTheme from '../../assets/images/figure-light-theme.svg'
 import smokeWebpLightTheme from '../../assets/images/smoke-light-theme.webp'
 import smokeWebpDarkTheme from '../../assets/images/smoke-dark-theme.webp'
 
+import Fasteners from '../Fasteners/Fasteners'
+
 import styles from './Hero.module.scss'
 
 const Hero = () => {
 	return (
 		<section className={styles['hero']}>
+			<Fasteners hasCross={true} hasLine={true} />
 			<div className='container'>
 				<div className={styles['hero-background']}>
 					<span

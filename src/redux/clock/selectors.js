@@ -1,0 +1,1 @@
+export const selectNow = (state) => state.clock.now

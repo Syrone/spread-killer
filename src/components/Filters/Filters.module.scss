@@ -4,41 +4,9 @@
 	position: relative;
 	z-index: 2;
 
-	&::after,
-	&::before {
-
-		@include mixins.breakpoint-up(xl) {
-			content: '';
-			width: var(--offset-decoration);
-			display: block;
-			background-color: var(--theme-light-rgba-60);
-			border-block: 1px solid var(--theme-border-rgba-10);
-			position: absolute;
-			top: 0;
-			bottom: 0;
-	
-			@include mixins.no-touch;
-			@include mixins.transition;
-		}
-	}
-
-	&::after {
-
-		@include mixins.breakpoint-up(xl) {
-			left: 0;
-		}
-	}
-
-	&::before {
-
-		@include mixins.breakpoint-up(xl) {
-			right: 0;
-		}
-	}
-
 	&:global > .container {
 		background-color: var(--body-bg);
-		border-block: 1px solid var(--theme-border-rgba-10);
+		border-bottom: 1px solid var(--theme-border-rgba-10);
 		padding-block: 1.25rem;
 
 		@include mixins.transition;

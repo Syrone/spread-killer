@@ -1,80 +1,44 @@
 @use "../../styles/mixins" as mixins;
 
 .table {
-
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 
+	&:global([data-has-vertical-scroll="true"]) {
+		@include mixins.breakpoint-hover-up(xl) {
+			margin-right: calc(var(--scrollbar-width) * -1);
+		}
+	}
+
 	&-section {
 		--_header-height: 3rem;
 
-		flex: 1;
-		overflow: hidden;
+		height: calc(100vh - var(--header-height, 0rem) - var(--filters-height, 0rem));
+
+		@supports (height: 100dvh) {
+      height: calc(100dvh - var(--header-height, 0rem) - var(--filters-height, 0rem));
+    }
+
+		@media (min-height: 768px) {
+			flex: 1;
+			height: auto;
+		}
 
 		> :global(.container) {
 			height: 100%;
 			padding-inline: 0;
 		}
-
-		:global {
-
-			.scroll-area {
-
-				&-scrollbar {
-					margin-top: var(--_header-height);
-
-					@media (hover: hover) {
-						margin-block: calc(var(--radix-scroll-area-button-size) * 2 + .25rem);
-						margin-right: calc((var(--width-decoration) + var(--radix-scroll-area-corner-width)) / 2 * -1);
-					}
-				}
-
-				&-button {
-					--_width: var(--radix-scroll-area-button-size);
-					--_height: var(--radix-scroll-area-button-size);
-					--_padding: .25rem;
-
-					--_icon-size: 100%;
-
-					display: none;
-					margin-right: calc((var(--width-decoration) + var(--radix-scroll-area-button-size)) / 2 * -1);
-					position: absolute;
-					right: 0;
-
-					@media (hover: hover) {
-						display: inline-flex;
-					}
-
-					&.up {
-						top: 1.25rem;
-
-						> * {
-							transform: rotate(180deg);
-						}
-					}
-
-					&.down {
-						--_transform: rotateY(180deg);
-
-						--_transform-hover: rotateY(180deg);
-
-						--_transform-active: rotateY(180deg);
-
-						bottom: 1.25rem;
-					}
-				}
-			}
-		}
 	}
 
 	&-body {
 		flex: 1;
-		padding-top: var(--_header-height);
+		display: grid;
 	}
 }
 
 .row {
+	grid-column: -1 / 1;
 	display: grid;
 	grid-template-columns: 8.125rem minmax(15.625rem, 1fr) minmax(11.25rem, 12.5rem) minmax(11.25rem, 12.5rem) 10.625rem 10.625rem;
 	background-color: var(--body-bg);
@@ -85,4 +49,12 @@
 	&.even {
 		background-color: var(--theme-border-rgba-03);
 	}
+}
+
+.message {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
 }

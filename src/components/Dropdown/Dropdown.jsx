@@ -16,10 +16,11 @@ const Dropdown = ({
 	options = [],
 	multiple = false,
 	placeholder = "Dropdown",
+	selected,
 	onChange,
 }) => {
 	const [isOpen, setIsOpen] = React.useState(false)
-	const [localOptions, setLocalOptions] = React.useState(options)
+	const [localOptions, setLocalOptions] = React.useState([])
 	const [searchInput, setSearchInput] = React.useState('')
 	const [search, setSearch] = React.useState('')
 	const searchRef = React.useRef(null)
@@ -36,8 +37,16 @@ const Dropdown = ({
 	})
 
 	React.useEffect(() => {
-		setLocalOptions(options)
-	}, [options])
+		const selArr = multiple
+			? Array.isArray(selected) ? selected : []
+			: (typeof selected === 'string' ? [selected] : [])
+
+		setLocalOptions(options.map(o => ({
+			label: o.label,
+			icon: o.icon,
+			selected: selArr.includes(o.label),
+		})))
+	}, [options, selected, multiple])
 
 	React.useEffect(() => {
 		if (isOpen && multiple && searchRef.current) {
@@ -73,22 +82,33 @@ const Dropdown = ({
 				o.label === option.label ? { ...o, selected: !o.selected } : o
 			))
 		} else {
-			const updated = localOptions.map(o => ({ ...o, selected: o.label === option.label }))
+			const updated = localOptions.map(o => ({
+				...o,
+				selected: o.label === option.label
+			}))
 			setLocalOptions(updated)
-			onChange && onChange(updated.find(o => o.selected))
+			onChange && onChange(option.label)
 			setIsOpen(false)
 		}
 	}
 
 	const handleApply = () => {
-		onChange && onChange(localOptions.filter(o => o.selected))
+		if (onChange) {
+			const chosen = localOptions.filter(o => o.selected).map(o => o.label)
+			chosen.length > 0 && onChange(chosen)
+		}
 		resetSearch()
 		setIsOpen(false)
 	}
 
 	const handleReset = () => {
-		resetSearch()
+		if (onChange) {
+			const hadSelection = localOptions.some(o => o.selected)
+			hadSelection && onChange([])
+		}
+
 		setLocalOptions(prev => prev.map(o => ({ ...o, selected: false })))
+		resetSearch()
 
 		searchRef.current && searchRef.current.focus()
 	}
@@ -103,9 +123,7 @@ const Dropdown = ({
 	)
 
 	const displayText = () => {
-		if (multiple) {
-			return placeholder
-		}
+		if (multiple) return placeholder
 		const sel = localOptions.find(o => o.selected)
 		return sel ? sel.label : placeholder
 	}
@@ -134,7 +152,7 @@ const Dropdown = ({
 					<div
 						ref={refs.setFloating}
 						className={clsx(
-							styles['dropdown-menu'],	
+							styles['dropdown-menu'],
 						)}
 						style={{
 							position: strategy,
@@ -205,12 +223,12 @@ const Dropdown = ({
 							</ScrollArea.Viewport>
 
 							<ScrollArea.Scrollbar className={clsx(
-								styles['dropdown-scroll-scrollbar'],
-								'scroll-area-scrollbar'
+								'scroll-area-scrollbar',
+								'scroll-area-scrollbar-thin'
 							)} orientation='vertical' style={{ position: 'relative' }}>
 								<ScrollArea.Thumb className={clsx(
-									styles['dropdown-scroll-thumb'],
-									'scroll-area-thumb'
+									'scroll-area-thumb',
+									'scroll-area-thumb-thin'
 								)} />
 							</ScrollArea.Scrollbar>
 						</ScrollArea.Root>

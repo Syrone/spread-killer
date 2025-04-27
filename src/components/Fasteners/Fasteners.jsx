@@ -1,11 +1,9 @@
 import React from 'react'
 import clsx from 'clsx'
 
-import FastenersCruciform from './FastenersCruciform'
-
 import styles from './Fasteners.module.scss'
 
-const Fasteners = ({ className }) => {
+const Fasteners = ({ className, hasCross = false, hasLine = false, hasFill = false }) => {
 
 	return (
 		<>
@@ -13,10 +11,35 @@ const Fasteners = ({ className }) => {
 				styles['fasteners'],
 				className
 			)}>
-				<span></span>
-				<span></span>
+				<span>
+					<span className={styles['fasteners-square']}></span>
+					<span className={styles['fasteners-square']}></span>
+				</span>
+
+				{
+					hasCross && (
+						<span>
+							<span className={styles['fasteners-cross']}></span>
+							<span className={styles['fasteners-cross']}></span>
+						</span>
+					)
+				}
+
+				{
+					hasLine && (
+						<span>
+							<span className={clsx(
+								styles['fasteners-line'],
+								hasFill && styles['fasteners-fill']
+							)}></span>
+							<span className={clsx(
+								styles['fasteners-line'],
+								hasFill && styles['fasteners-fill']
+							)}></span>
+						</span>
+					)
+				}
 			</div>
-			<FastenersCruciform className={className} />
 		</>
 	)
 }

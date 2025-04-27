@@ -28,21 +28,24 @@
 	}
 
 	&-sort {
+		--_color: var(--theme-gray-rgba-50);
+		--_padding: .5rem 0;
 
-		&-up,
-		&-down {
-			--_color: var(--theme-gray-rgba-50);
-			--_padding: .5rem .125rem;
+		--_color-hover: var(--theme-gray-color);
+		--_color-active: var(--theme-gray-color);
 
-			--_icon-size: .625rem;
-		}
+		gap: .25rem;
 
-		&-up {
-			--_transform: rotate(180deg);
+		&-icon {
+			--_size: .625rem;
 
-			--_transform-hover: rotate(180deg);
+			&:first-child {
+				transform: rotate(180deg);
+			}
 
-			--_transform-active: rotate(180deg);
+			&.is-active {
+				--_color: var(--theme-text-color);
+			}
 		}
 	}
 }

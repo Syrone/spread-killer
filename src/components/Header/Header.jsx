@@ -1,58 +1,61 @@
 import React from "react"
+import { useLocation } from "react-router-dom"
+import clsx from "clsx"
 
-import throttle from "../../utils/throttle"
+import { useElementHeightVar } from '../../hooks/useElementHeightVar'
 
 import Logo from '../Logo/Logo'
 import Button from '../Buttons/Button'
+import ButtonLink from '../Buttons/ButtonLink'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
 
 import styles from './Header.module.scss'
-import clsx from "clsx"
+
+const HEADER_NAV = [
+	{ label: 'Фандинг', link: '/' },
+	{ label: 'Стейкинг', link: '/staking' },
+	{ label: 'Лаунчпулы', link: '/launchpool' }
+]
+
+const SCROLL_THRESHOLD = 10
 
 const Header = () => {
-  const headerRef = React.useRef(null)
+  const headerRef = useElementHeightVar('--header-height')
 	const menuRef = React.useRef(null)
-  const [isMenuOpen, setMenuOpen] = React.useState(false)
+	const [isMenuOpen, setMenuOpen] = React.useState(false)
+  const [isScrolled, setScrolled] = React.useState(false)
 
-	const updateHeaderHeight = () => {
-    if (headerRef.current) {
-      const height = headerRef.current.offsetHeight
-      document.documentElement.style.setProperty('--header-height', `${height}px`)
-    }
-  }
+	const location = useLocation()
 
 	React.useEffect(() => {
-    updateHeaderHeight()
+		const handleClickOutside = (event) => {
+			if (isMenuOpen && menuRef.current && !menuRef.current.contains(event.target)) {
+				setMenuOpen(false)
+			}
+		}
 
-    const handleResize = throttle(updateHeaderHeight)
-    window.addEventListener("resize", handleResize)
+		document.addEventListener("mousedown", handleClickOutside)
+		return () => {
+			document.removeEventListener("mousedown", handleClickOutside)
+		}
+	}, [isMenuOpen])
 
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
+	React.useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      setScrolled(scrollY > SCROLL_THRESHOLD);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Проверим при монтировании
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [])
 
-	React.useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isMenuOpen && menuRef.current && !menuRef.current.contains(event.target)) {
-        setMenuOpen(false)
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isMenuOpen])
-
-	const headerNavText = [
-		'Фандинг',
-		'Стейкинг',
-		'Лаунчпулы',
-	]
-
 	return (
-		<header ref={headerRef} className={styles['header']}>
+		<header ref={headerRef} className={clsx(
+			styles['header'],
+			isScrolled && styles['is-scrolled']
+		)}>
 			<div className="container">
 				<Logo />
 
@@ -77,14 +80,15 @@ const Header = () => {
 					<nav className={styles['header-nav']}>
 						<ul className={styles['header-nav-list']}>
 							{
-								headerNavText.map((item, index) => (
+								HEADER_NAV.map((item, index) => (
 									<li key={item + index}
 										className={styles['header-nav-item']}>
-										<Button
+										<ButtonLink
+											href={item.link}
 											className={styles['header-nav-button']}
-											isActive={index === 0}>
-											{item}
-										</Button>
+											isActive={location.pathname === item.link}>
+											{item.label}
+										</ButtonLink>
 									</li>
 								))
 							}
