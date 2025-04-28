@@ -4,8 +4,9 @@ import api from '../../api'
 
 const initialState = {
 	items: [],
-	status: 'loading',
-	nextFetchAt: null
+	status: 'idle',
+	nextFetchAt: null,
+	error: null,
 }
 
 export const fetchItems = createAsyncThunk(
@@ -26,14 +27,17 @@ export const itemsSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchItems.pending, (state) => {
-			state.status = 'loading'
+			state.status = state.items.length > 0 ? 'refreshing' : 'loading'
+			state.error = null
 		})
 		builder.addCase(fetchItems.fulfilled, (state, { payload }) => {
 			state.status = 'success'
-			state.items = payload;
+			state.items = payload
+			state.error = null
 		})
-		builder.addCase(fetchItems.rejected, (state) => {
+		builder.addCase(fetchItems.rejected, (state, { error }) => {
 			state.status = 'error'
+			state.error = error.message || 'Неизвестная ошибка'
 		})
 	},
 })

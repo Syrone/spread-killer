@@ -29,10 +29,10 @@ const Row = ({ coin, pairs, f_spread, open_spread }) => {
 					items={pairs}
 					renderItem={({ exchange, price, pair, position }, i) => (
 						<li
-							key={pair.url}
+							key={i}
 							className={styles['cell-item']}>
 							<a
-								href={i}
+								href={pair.url}
 								className={styles['cell-item-link']}
 								target='_blank'
 								rel='noreferrer'>

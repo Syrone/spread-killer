@@ -5,9 +5,10 @@ import {
 	setSearch, setDiffIntervals
 } from '../../redux/filters/slice'
 
+import { useNow } from '../../hooks/useNow'
+
 import { selectNextFetchAt } from '../../redux/items/selectors'
 import { selectFilters } from '../../redux/filters/selectors'
-import { selectNow } from '../../redux/clock/selectors'
 
 import { useElementHeightVar } from '../../hooks/useElementHeightVar'
 
@@ -46,9 +47,9 @@ const Filters = () => {
 	const dispatch = useDispatch()
 	const { exchanges, mValue, search, diffIntervals } = useSelector(selectFilters)
 	const nextFetchAt = useSelector(selectNextFetchAt)
-	const now = useSelector(selectNow)
+	const now = useNow()
 	const secondsLeft = nextFetchAt
-		? Math.max(nextFetchAt - now, 0)
+		? Math.max(Math.ceil(nextFetchAt - now), 0)
 		: 15
 
 	const [searchState, setSearchState] = React.useState({

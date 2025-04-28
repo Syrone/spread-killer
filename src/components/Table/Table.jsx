@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Virtuoso } from 'react-virtuoso'
 import clsx from 'clsx'
 
+
 import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 import { useHasScroll } from '../../hooks/useHasScroll'
 
 import { fetchItems, setNextFetchAt } from '../../redux/items/slice'
-import { selectStatus, selectVisibleItems } from '../../redux/items/selectors'
+import { selectStatus, selectVisibleItems, selectError } from '../../redux/items/selectors'
 
 import TableHeader from './TableHeader'
 import Row from './Row'
@@ -26,29 +27,29 @@ const Table = () => {
 	const dispatch = useDispatch()
 	const items = useSelector(selectVisibleItems)
 	const status = useSelector(selectStatus)
+	const error = useSelector(selectError)
 
 	React.useEffect(() => {
-		let cancelled = false
-
 		const POLL_INTERVAL = 15
+		let intervalId
 
 		const poll = async () => {
+			const nowSec = Math.floor(Date.now() / 1000)
+			dispatch(setNextFetchAt(nowSec + POLL_INTERVAL))
 			try {
 				await dispatch(fetchItems()).unwrap()
-				const nowSec = Math.floor(Date.now() / 1000)
-				dispatch(setNextFetchAt(nowSec + POLL_INTERVAL))
 			} catch (err) { }
-
-			if (!cancelled) {
-				setTimeout(poll, POLL_INTERVAL * 1000)
-			}
 		}
 
 		poll()
-		return () => { cancelled = true }
+		intervalId = setInterval(poll, POLL_INTERVAL * 1000)
+
+		return () => clearInterval(intervalId)
 	}, [dispatch])
 
-	const isInitial = status === 'loading' && items.length === 0
+	const isLoading = status === 'loading'
+	const isRefreshing = status === 'refreshing'
+	const isInitial = isLoading && items.length === 0
 
 	useScrollbarWidth()
 
@@ -58,13 +59,13 @@ const Table = () => {
 
 				{status === 'error' && (
 					<div className={styles['message']}>
-						Ошибка загрузки данных. Попробуйте обновить страницу.
+						Ошибка загрузки данных: {error}. Попробуйте позже.
 					</div>
 				)}
 
 
-				{status !== 'error' && (
-					items.length === 0 && status === 'success' ? (
+				{(status === 'success' || isRefreshing || isLoading) && (
+					items.length === 0 && !isInitial ? (
 						<div className={styles['message']}>
 							Ничего не найдено
 						</div>
@@ -80,7 +81,7 @@ const Table = () => {
 							computeItemKey={(index, item) =>
 								item === 'header'
 									? 'header' : isInitial
-										? `skeleton-${index}` : item.coin_id
+										? `skeleton-${index}` : item.id
 							}
 							components={{
 								Scroller: CustomScroller,
