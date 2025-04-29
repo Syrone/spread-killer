@@ -19,8 +19,8 @@ export default function Logo({ className, ...props }) {
 			{...props}>
 			<WebpImage src={logo} webp={logoWebp} width={'40'} height={'34'} alt={'logo'} />
 			<span className={styles['logo-text']}>
-				<span>SpreadKiller</span>
-				<span>SpreadKiller</span>
+				<span>SKiller</span>
+				<span>SKiller</span>
 			</span>
 		</a>
 	)

@@ -8,6 +8,7 @@ import Logo from '../Logo/Logo'
 import Button from '../Buttons/Button'
 import ButtonLink from '../Buttons/ButtonLink'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
+import Subscribe from '../Subscribe/Subscribe'
 
 import styles from './Header.module.scss'
 
@@ -97,6 +98,8 @@ const Header = () => {
 				</div>
 
 				<div className={styles['header-buttons']}>
+					<Subscribe />
+
 					<ThemeToggle />
 					<Button
 						icon={'menu'}

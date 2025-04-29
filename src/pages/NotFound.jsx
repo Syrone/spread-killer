@@ -1,6 +1,6 @@
 import React from 'react'
 
-import FotFoundContent from '../components/NotFoundContent/FotFoundContent'
+import FotFoundContent from '../components/NotFoundContent/NotFoundContent'
 
 const NotFound = () => {
 	return (

@@ -6,13 +6,12 @@ import {
 } from '../../redux/filters/slice'
 
 import { useNow } from '../../hooks/useNow'
+import { useResponsiveText } from '../../hooks/useResponsiveText'
+import { useElementHeightVar } from '../../hooks/useElementHeightVar'
 
 import { selectNextFetchAt } from '../../redux/items/selectors'
 import { selectFilters } from '../../redux/filters/selectors'
 
-import { useElementHeightVar } from '../../hooks/useElementHeightVar'
-
-import throttle from '../../utils/throttle'
 import debounce from '../../utils/debounce'
 
 import Fasteners from '../Fasteners/Fasteners'
@@ -55,30 +54,10 @@ const Filters = () => {
 	const [searchState, setSearchState] = React.useState({
 		searchValue: search,
 		searchMValue: mValue,
-		placeholder: window.innerWidth > 992 ? 'Поиск криптовалюты' : 'Поиск'
 	})
-	const [switcherState, setSwitcherState] = React.useState({
-		text: window.innerWidth > 992 ? 'Разные интервалы' : '+ / -'
-	})
+	const searchPlaceholder = useResponsiveText(992, 'Поиск криптовалюты', 'Поиск')
+	const switcherText = useResponsiveText(992, 'Разные интервалы', '+ / -')
 	const filtersRef = useElementHeightVar('--filters-height')
-
-	const handleResizeThrottled = React.useCallback(() =>
-		throttle(() => {
-			setSearchState(prev => ({
-				...prev,
-				placeholder: window.innerWidth > 992 ? 'Поиск криптовалюты' : 'Поиск'
-			}))
-			setSwitcherState(prev => ({
-				...prev,
-				text: window.innerWidth > 992 ? 'Разные интервалы' : '+ / -'
-			}))
-		}), []
-	)
-
-	React.useEffect(() => {
-		window.addEventListener('resize', handleResizeThrottled)
-		return () => window.removeEventListener('resize', handleResizeThrottled)
-	}, [handleResizeThrottled])
 
 	const debouncedSetM = React.useMemo(
 		() => debounce((value) => {
@@ -138,7 +117,7 @@ const Filters = () => {
 					<div className={styles['filters-block']}>
 						<Input
 							className={styles['filters-search']}
-							placeholder={searchState.placeholder}
+							placeholder={searchPlaceholder}
 							value={searchState.searchValue}
 							onChange={(e) => {
 								const value = e.target.value
@@ -151,7 +130,7 @@ const Filters = () => {
 
 						<Switcher
 							className={styles['filters-switcher']}
-							text={switcherState.text}
+							text={switcherText}
 							checked={diffIntervals}
 							onChange={(checked) => dispatch(setDiffIntervals(checked))} />
 					</div>

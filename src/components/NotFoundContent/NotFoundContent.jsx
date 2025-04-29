@@ -1,9 +1,8 @@
 import React from 'react'
 
-import Fasteners from '../Fasteners/Fasteners'
 import ButtonLink from '../Buttons/ButtonLink'
 
-import styles from './FotFoundContent.module.scss'
+import styles from './NotFoundContent.module.scss'
 
 export default function FotFoundContent() {
 	return (
