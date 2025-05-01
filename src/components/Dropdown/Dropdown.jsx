@@ -102,10 +102,7 @@ const Dropdown = ({
 	}
 
 	const handleReset = () => {
-		if (onChange) {
-			const hadSelection = localOptions.some(o => o.selected)
-			hadSelection && onChange([])
-		}
+		onChange && onChange([])
 
 		setLocalOptions(prev => prev.map(o => ({ ...o, selected: false })))
 		resetSearch()
