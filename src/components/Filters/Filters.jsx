@@ -62,6 +62,11 @@ const Filters = ({
 		searchValue: search,
 		searchMValue: mValue,
 	})
+
+	React.useEffect(() => {
+		setSearchState({ searchValue: search, searchMValue: mValue })
+	}, [search, mValue])
+
 	const searchPlaceholder = useResponsiveText(992, 'Поиск криптовалюты', 'Поиск')
 	const switcherText = useResponsiveText(992, 'Разные интервалы', '+ / -')
 	const filtersRef = useElementHeightVar('--filters-height')

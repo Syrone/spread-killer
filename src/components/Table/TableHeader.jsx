@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 
 import { setSort } from '../../redux/filters/slice'
+import { selectFilters } from '../../redux/filters/selectors'
 
 import ColumnHeader from './ColumnHeader'
 
@@ -17,7 +18,7 @@ const COLUMNHEADER_ARRAY = [
 
 const TableHeader = ({ arrayColumnHeader = COLUMNHEADER_ARRAY, className }) => {
 	const dispatch = useDispatch()
-	const { sortBy, sortDir } = useSelector(state => state.filters)
+	const { sortBy, sortDir } = useSelector(selectFilters)
 
 	return (
 		<div role='rowgroup' className={styles['table-header']}>

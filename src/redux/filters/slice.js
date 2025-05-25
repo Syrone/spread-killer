@@ -1,49 +1,85 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
+export const defaultFilters = {
 	strategy: 'long+short:funding',
 	exchanges: [],
 	mValue: '',
 	search: '',
 	diffIntervals: false,
+	orderbook: '',
+	lifetime_seconds: '',
 	sortBy: 'f_spread',
 	sortDir: 'desc',
+}
+
+const initialState = {
+	pageName: 'Home',
+	pageFilters: {},
 }
 
 export const filtersSlice = createSlice({
 	name: 'filters',
 	initialState,
 	reducers: {
+		setPageName(state, { payload: { pageName, initialFilters } }) {
+			state.pageName = pageName
+
+			if (!state.pageFilters[pageName]) {
+				state.pageFilters[pageName] = initialFilters
+					? { ...initialFilters }
+					: { ...defaultFilters }
+			}
+		},
 		setStrategy(state, { payload }) {
-			state.strategy = payload
+			const name = state.pageName
+
+			state.pageFilters[name] ??= { ...defaultFilters }
+			state.pageFilters[name].strategy = payload
 		},
 		toggleExchange(state, { payload }) {
-			state.exchanges = payload
+			const name = state.pageName
+
+			state.pageFilters[name] ??= { ...defaultFilters }
+			state.pageFilters[name].exchanges = payload
 		},
 		setMValue(state, { payload }) {
-			state.mValue = payload
+			const name = state.pageName
+
+			state.pageFilters[name] ??= { ...defaultFilters }
+			state.pageFilters[name].mValue = payload
 		},
 		setSearch(state, { payload }) {
-			state.search = payload
+			const name = state.pageName
+
+			state.pageFilters[name] ??= { ...defaultFilters }
+			state.pageFilters[name].search = payload
 		},
 		setDiffIntervals(state, { payload }) {
-			state.diffIntervals = payload
+			const name = state.pageName
+
+			state.pageFilters[name] ??= { ...defaultFilters }
+			state.pageFilters[name].diffIntervals = payload
 		},
 		setSort(state, { payload: { sortBy } }) {
-			if (state.sortBy === sortBy) {
-				state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc'
+			const name = state.pageName
+
+			state.pageFilters[name] ??= { ...defaultFilters }
+			const filters = state.pageFilters[name]
+			if (filters.sortBy === sortBy) {
+				filters.sortDir = filters.sortDir === 'asc' ? 'desc' : 'asc'
 			} else {
-				state.sortBy = sortBy
-				state.sortDir = 'asc'
+				filters.sortBy = sortBy
+				filters.sortDir = 'asc'
 			}
 		},
 		clearFilters(state) {
-			Object.assign(state, initialState)
+			state.pageFilters[state.pageName] = { ...defaultFilters }
 		},
 	},
 })
 
 export const {
+	setPageName,
 	setStrategy,
 	toggleExchange,
 	setMValue,
