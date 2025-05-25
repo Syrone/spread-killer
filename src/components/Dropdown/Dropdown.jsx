@@ -95,7 +95,7 @@ const Dropdown = ({
 	const handleApply = () => {
 		if (onChange) {
 			const chosen = localOptions.filter(o => o.selected).map(o => o.label)
-			chosen.length > 0 && onChange(chosen)
+			onChange(chosen)
 		}
 		resetSearch()
 		setIsOpen(false)

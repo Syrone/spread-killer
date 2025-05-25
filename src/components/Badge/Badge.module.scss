@@ -1,0 +1,18 @@
+@use "../../styles/mixins" as mixins;
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: .625rem;
+	font-weight: 500;
+	line-height: 1;
+	text-align: center;
+	color: var(--theme-success-color);
+	background-color: var(--theme-success-rgba-20);
+	border-top: 1px solid var(--theme-success-rgba-10);
+	padding: .25rem;
+	text-transform: capitalize;
+
+	@include mixins.transition;
+}

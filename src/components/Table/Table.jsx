@@ -3,27 +3,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Virtuoso } from 'react-virtuoso'
 import clsx from 'clsx'
 
-
+import { useYmLink } from '../../hooks/useYmLink'
 import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
-import { useHasScroll } from '../../hooks/useHasScroll'
 
 import { fetchItems, setNextFetchAt } from '../../redux/items/slice'
 import { selectStatus, selectVisibleItems, selectError } from '../../redux/items/selectors'
 
+import TableScrollbar from './TableScrollbar'
 import TableHeader from './TableHeader'
-import Row from './Row'
-import RowSkeleton from './RowSkeleton'
+import RowSkeleton from '../TableRow/RowSkeleton'
 
 import styles from './Table.module.scss'
 
 const DEFAULT_SKELETONS = 18
 
-const CustomScroller = React.forwardRef((props, ref) => {
-	useHasScroll(ref)
-	return <div ref={ref} {...props} />
-})
-
-const Table = () => {
+const Table = ({
+	arrayColumnHeader,
+	RowComponent,
+}) => {
 	const dispatch = useDispatch()
 	const items = useSelector(selectVisibleItems)
 	const status = useSelector(selectStatus)
@@ -52,6 +49,7 @@ const Table = () => {
 	const isInitial = isLoading && items.length === 0
 
 	useScrollbarWidth()
+	useYmLink('on_click_link')
 
 	return (
 		<section className={styles['table-section']}>
@@ -74,6 +72,7 @@ const Table = () => {
 							role='table'
 							className={clsx(
 								styles['table'],
+								arrayColumnHeader && arrayColumnHeader.length === 7 && styles['table-cols-7'],
 								'scrollable'
 							)}
 							data={['header', ...(isInitial ? Array(DEFAULT_SKELETONS).fill(undefined) : items)]}
@@ -84,7 +83,7 @@ const Table = () => {
 										? `skeleton-${index}` : item.id
 							}
 							components={{
-								Scroller: CustomScroller,
+								Scroller: TableScrollbar,
 								List: React.forwardRef((props, ref) => (
 									<div
 										role="rowgroup"
@@ -99,12 +98,12 @@ const Table = () => {
 							}}
 							itemContent={(_, item) => {
 								if (item === 'header') {
-									return <TableHeader className={styles['row']} />
+									return <TableHeader arrayColumnHeader={arrayColumnHeader} className={styles['row']} />
 								}
 
 								return isInitial
 									? <RowSkeleton />
-									: <Row {...item} />
+									: <RowComponent {...item} />
 							}}
 						/>
 					)

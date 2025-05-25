@@ -32,9 +32,28 @@ export const selectVisibleItems = createSelector(
 		// 2) Фильтр по Биржам
 		if (filters.exchanges.length > 0) {
 			const selectedExchanges = filters.exchanges.map(e => e.toUpperCase())
-			result = result.filter(item =>
-				item.pairs.every(p => selectedExchanges.includes(p.exchange))
-			)
+
+			result = result.filter(item => {
+				// Оставляем только те пары, чей exchange входит в выбранный список
+				const matchedPairs = item.pairs.filter(p =>
+					selectedExchanges.includes(p.exchange)
+				)
+				const count = matchedPairs.length
+
+				switch (selectedExchanges.length) {
+					case 1:
+						// при одной выборке – хотя бы одна пара
+						return count >= 1
+
+					case 2:
+						// при двух – ровно две (чтобы были оба фильтра)
+						return count === 2
+
+					default:
+						// при трёх и более – любые сочетания по 2 (хотя бы две пары)
+						return count >= 2
+				}
+			})
 		}
 
 		// 4) Фильтр по интервалам

@@ -1,4 +1,3 @@
-import React from 'react'
 import clsx from 'clsx'
 
 import Icon from '../Icon/Icon'
@@ -9,6 +8,7 @@ import styles from './ColumnHeader.module.scss'
 
 const ColumnHeader = ({
 	label,
+	icon,
 	popover,
 	sort,
 	onClick,
@@ -20,7 +20,17 @@ const ColumnHeader = ({
 			role='columnheader'
 			className={styles['columnheader']}>
 			<div className={styles['columnheader-info']}>
-				<span>{label}</span>
+				{icon && (
+					<Icon 
+						className={clsx(
+							styles['columnheader-info-icon'],
+							icon.class && styles[`columnheader-info-icon--${icon.class}`],
+						)}
+						name={icon.name}/>
+				)}
+				<span>
+					{label}
+				</span>
 				{
 					popover && (
 						<Popover className={styles['columnheader-popover']} popover={popover} />

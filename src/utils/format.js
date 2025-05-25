@@ -8,3 +8,9 @@ export function formatRemainingTime(seconds) {
   const timeString = `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`
   return { timeString }
 }
+
+export const formatTimeSecond = (seconds) => {
+  const m = Math.floor(seconds / 60)
+  const s = seconds % 60
+  return `${m}m ${s}s`
+}

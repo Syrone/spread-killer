@@ -35,6 +35,13 @@
 		flex: 1;
 		display: grid;
 	}
+
+	&-cols-7 {
+
+		.row {
+			grid-template-columns: minmax(10rem, 10.625rem) minmax(15.5625rem, 1fr) minmax(8.125rem, 9.375rem) minmax(8.75rem, 10.625rem) minmax(6.25rem, 7.5rem) minmax(8.125rem, 8.75rem) minmax(9.6875rem, 10.625rem);
+		}
+	}
 }
 
 .row {

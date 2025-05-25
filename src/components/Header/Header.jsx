@@ -5,6 +5,7 @@ import clsx from "clsx"
 import { useElementHeightVar } from '../../hooks/useElementHeightVar'
 
 import Logo from '../Logo/Logo'
+import Badge from '../Badge/Badge'
 import Button from '../Buttons/Button'
 import ButtonLink from '../Buttons/ButtonLink'
 import ThemeToggle from '../ThemeToggle/ThemeToggle'
@@ -13,9 +14,10 @@ import Subscribe from '../Subscribe/Subscribe'
 import styles from './Header.module.scss'
 
 const HEADER_NAV = [
-	{ label: 'Фандинг', link: '/' },
-	{ label: 'Стейкинг', link: '/staking' },
-	{ label: 'Лаунчпулы', link: '/launchpool' }
+	{ label: 'Фандинг', status: false, link: '/' },
+	{ label: 'Арбитраж', status: 'free', link: '/arbitration' },
+	{ label: 'Стейкинг', status: false, link: '/staking' },
+	{ label: 'Лаунчпулы', status: false, link: '/launchpool' }
 ]
 
 const SCROLL_THRESHOLD = 10
@@ -89,6 +91,7 @@ const Header = () => {
 											className={styles['header-nav-button']}
 											isActive={location.pathname === item.link}>
 											{item.label}
+											{item.status && <Badge text={item.status} />}
 										</ButtonLink>
 									</li>
 								))

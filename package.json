@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.9.0",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
     "react": "^19.1.0",
     "react-content-loader": "^7.0.2",
     "react-dom": "^19.1.0",
@@ -20,11 +21,12 @@
     "react-router-dom": "^7.5.2",
     "react-scripts": "5.0.1",
     "react-virtuoso": "^4.12.6",
+    "react-yandex-metrika": "^2.6.0",
     "reset-css": "^5.0.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "dev": "react-app-rewired start",
     "build:ghpages": "react-app-rewired build",
     "build:host": "cross-env PUBLIC_URL=/ react-app-rewired build",
     "test": "react-app-rewired test",
@@ -51,8 +53,10 @@
     ]
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
     "customize-cra": "^1.0.0",
+    "express": "^5.1.0",
     "gh-pages": "^6.3.0",
     "image-webpack-loader": "^8.1.0",
     "react-app-rewired": "^2.2.1",
@@ -60,6 +64,6 @@
     "sharp-cli": "^5.1.0",
     "webp-loader": "^0.6.0"
   },
-  "proxy": "https://baskets-strain-scanner-virus.trycloudflare.com",
+  "proxy": "https://api.spread-killer.com/api",
   "homepage": "https://syrone.github.io/spread-killer"
 }

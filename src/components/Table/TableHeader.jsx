@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { setSort } from '../../redux/filters/slice'
@@ -16,14 +15,14 @@ const COLUMNHEADER_ARRAY = [
 	{ key: 'open_spread', label: 'Open Spread', popover: 'Разница между ценами на одну и ту же монету на двух биржах.', sort: true },
 ]
 
-const TableHeader = ({ className }) => {
+const TableHeader = ({ arrayColumnHeader = COLUMNHEADER_ARRAY, className }) => {
 	const dispatch = useDispatch()
 	const { sortBy, sortDir } = useSelector(state => state.filters)
 
 	return (
 		<div role='rowgroup' className={styles['table-header']}>
 			<div role='row' className={className}>
-				{COLUMNHEADER_ARRAY.map(obj => {
+				{arrayColumnHeader.map(obj => {
 					const { key: objKey, ...columnProps } = obj
 
 					return (

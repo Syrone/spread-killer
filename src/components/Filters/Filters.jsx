@@ -1,9 +1,11 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-	toggleExchange, setMValue,
+	setStrategy, toggleExchange, setMValue,
 	setSearch, setDiffIntervals
 } from '../../redux/filters/slice'
+
+import ym from 'react-yandex-metrika'
 
 import { useNow } from '../../hooks/useNow'
 import { useResponsiveText } from '../../hooks/useResponsiveText'
@@ -23,10 +25,10 @@ import Switcher from '../Switcher/Switcher'
 
 import styles from './Filters.module.scss'
 
-// const DROPDOWN_STRATEGY = [
-// 	{ label: 'long+short:funding', selected: false },
-// 	{ label: 'long+short:spread', selected: false },
-// ]
+const DROPDOWN_STRATEGY = [
+	{ label: 'long+short:funding', selected: false },
+	{ label: 'long+short:spread', selected: false },
+]
 
 const DROPDOWN_EXCHANGES = [
 	{ icon: 'binance', label: 'Binance', selected: false },
@@ -34,7 +36,8 @@ const DROPDOWN_EXCHANGES = [
 	{ icon: 'bitget', label: 'Bitget', selected: false },
 	{ icon: 'bybit', label: 'Bybit', selected: false },
 	{ icon: 'gateio', label: 'Gateio', selected: false },
-	{ icon: 'htx', label: 'Huobi', selected: false },
+	{ icon: 'kraken', label: 'Kraken', selected: false },
+	{ icon: 'huobi', label: 'Huobi', selected: false },
 	{ icon: 'hyperliquid', label: 'Hyperliquid', selected: false },
 	{ icon: 'lbank', label: 'Lbank', selected: false },
 	{ icon: 'mexc', label: 'Mexc', selected: false },
@@ -42,9 +45,13 @@ const DROPDOWN_EXCHANGES = [
 	{ icon: 'ourbit', label: 'Ourbit', selected: false }
 ]
 
-const Filters = () => {
+const Filters = ({
+	showStrategy = false,
+	showExchanges = true,
+	showSwitcher = true,
+}) => {
 	const dispatch = useDispatch()
-	const { exchanges, mValue, search, diffIntervals } = useSelector(selectFilters)
+	const { strategy, exchanges, mValue, search, diffIntervals } = useSelector(selectFilters)
 	const nextFetchAt = useSelector(selectNextFetchAt)
 	const now = useNow()
 	const secondsLeft = nextFetchAt
@@ -79,17 +86,28 @@ const Filters = () => {
 			<Fasteners hasLine={true} hasFill={true} />
 			<div className="container">
 				<div className={styles['filters-body']}>
-					{/* <Dropdown
-						options={DROPDOWN_STRATEGY}
-						placeholder='Стратегия'
-						selected={strategy}
-						onChange={value => dispatch(setStrategy(value))} /> */}
-					<Dropdown
-						options={DROPDOWN_EXCHANGES}
-						multiple={true}
-						placeholder='Биржи'
-						selected={exchanges}
-						onChange={value => dispatch(toggleExchange(value))} />
+					{
+						showStrategy && (
+							<Dropdown
+								options={DROPDOWN_STRATEGY}
+								placeholder='Стратегия'
+								selected={strategy}
+								onChange={value => dispatch(setStrategy(value))} />
+						)
+					}
+					{
+						showExchanges && (
+							<Dropdown
+								options={DROPDOWN_EXCHANGES}
+								multiple={true}
+								placeholder='Биржи'
+								selected={exchanges}
+								onChange={value => {
+									dispatch(toggleExchange(value))
+									ym('reachGoal', 'exchange_toggle', { exchange: value })
+								}} />
+						)
+					}
 
 					<div className={styles['input-number']}>
 						<Input
@@ -128,11 +146,15 @@ const Filters = () => {
 								debouncedSearch(value)
 							}} />
 
-						<Switcher
-							className={styles['filters-switcher']}
-							text={switcherText}
-							checked={diffIntervals}
-							onChange={(checked) => dispatch(setDiffIntervals(checked))} />
+						{
+							showSwitcher && (
+								<Switcher
+									className={styles['filters-switcher']}
+									text={switcherText}
+									checked={diffIntervals}
+									onChange={(checked) => dispatch(setDiffIntervals(checked))} />
+							)
+						}
 					</div>
 
 					<div className={styles['filters-period']}>

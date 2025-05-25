@@ -1,12 +1,10 @@
-import React from 'react'
-
 import { useNow } from '../../hooks/useNow'
 
 import { formatSigned, formatRemainingTime } from '../../utils/format'
 
 import styles from './Cell.module.scss'
 
-const CellItem = ({ funding_24h, funding_time }) => {
+const CellFunding = ({ funding_24h, funding_time }) => {
   const now = useNow()
   const remainingSeconds = funding_time - now
   const { timeString } = formatRemainingTime(Math.max(remainingSeconds, 0))
@@ -19,4 +17,4 @@ const CellItem = ({ funding_24h, funding_time }) => {
   )
 }
 
-export default CellItem
+export default CellFunding

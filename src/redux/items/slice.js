@@ -12,7 +12,7 @@ const initialState = {
 export const fetchItems = createAsyncThunk(
 	'items/fetchItems',
 	async () => {
-		const { data } = await api.get('/generate-data/')
+		const { data } = await api.get('/data/')
 		return data
 	},
 )

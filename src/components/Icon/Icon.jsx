@@ -1,4 +1,3 @@
-import React from "react"
 import clsx from "clsx"
 
 import styles from './Icon.module.scss'
@@ -20,7 +19,8 @@ import { ReactComponent as Bingx } from "../../assets/icons/bingx.svg"
 import { ReactComponent as Bitget } from "../../assets/icons/bitget.svg"
 import { ReactComponent as Bybit } from "../../assets/icons/bybit.svg"
 import { ReactComponent as GateIo } from "../../assets/icons/gateio.svg"
-import { ReactComponent as Htx } from "../../assets/icons/htx.svg"
+import { ReactComponent as Huobi } from "../../assets/icons/huobi.svg"
+import { ReactComponent as Kraken } from "../../assets/icons/kraken.svg"
 import { ReactComponent as Hyperliquid } from "../../assets/icons/hyperliq.svg"
 import { ReactComponent as Lbank } from "../../assets/icons/lbank.svg"
 import { ReactComponent as Mexc } from "../../assets/icons/mexc.svg"
@@ -45,7 +45,8 @@ const icons = {
   bitget: Bitget,
   bybit: Bybit,
   gateio: GateIo,
-  htx: Htx,
+  huobi: Huobi,
+  kraken: Kraken,
   hyperliquid: Hyperliquid,
   lbank: Lbank,
   mexc: Mexc,

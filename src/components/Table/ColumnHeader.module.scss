@@ -25,6 +25,14 @@
 
 	&-info {
 		flex: 1;
+
+		&-icon {
+			--_size: .625rem;
+
+			&--down {
+				transform: rotate(90deg);
+			}
+		}
 	}
 
 	&-sort {
