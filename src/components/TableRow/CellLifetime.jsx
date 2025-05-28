@@ -1,23 +1,19 @@
 import React from 'react'
-
 import { useNow } from '../../hooks/useNow'
 
 import { formatTimeSecond } from '../../utils/format'
 
 import styles from './Cell.module.scss'
 
-const CellLifetime = ({ lifetime }) => {
+const CellLifetime = ({ dateAdded }) => {
   const now = useNow()
-	const [start] = React.useState(() => now)
-
-  const elapsed = Math.floor(now - start)
-  const remaining = Math.max(lifetime - elapsed, 0)
+  const lifetime = now - dateAdded
 
   return (
     <div className={styles['cell-lifetime']}>
-			{formatTimeSecond(remaining)}
-		</div>
+      {formatTimeSecond(lifetime)}
+    </div>
   )
 }
 
-export default CellLifetime
+export default React.memo(CellLifetime)

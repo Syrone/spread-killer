@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const defaultFilters = {
 	strategy: 'long+short:funding',
 	exchanges: [],
+	hValue: '',
 	mValue: '',
 	search: '',
 	diffIntervals: false,
@@ -41,6 +42,12 @@ export const filtersSlice = createSlice({
 
 			state.pageFilters[name] ??= { ...defaultFilters }
 			state.pageFilters[name].exchanges = payload
+		},
+		setHValue(state, { payload }) {
+			const name = state.pageName
+
+			state.pageFilters[name] ??= { ...defaultFilters }
+			state.pageFilters[name].hValue = payload
 		},
 		setMValue(state, { payload }) {
 			const name = state.pageName
@@ -82,6 +89,7 @@ export const {
 	setPageName,
 	setStrategy,
 	toggleExchange,
+	setHValue,
 	setMValue,
 	setSearch,
 	setDiffIntervals,

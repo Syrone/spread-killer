@@ -1,46 +1,58 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-
-import api from '../../api'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
 	items: [],
-	status: 'idle',
+	openItems: {},
 	nextFetchAt: null,
-	error: null,
 }
-
-export const fetchItems = createAsyncThunk(
-	'items/fetchItems',
-	async () => {
-		const { data } = await api.get('/data/')
-		return data
-	},
-)
 
 export const itemsSlice = createSlice({
 	name: 'items',
 	initialState,
 	reducers: {
+		setItems(state, { payload }) {
+			const existingItemsMap = new Map(state.items.map(item => [item.id, item]))
+
+			const updatedItems = payload.map(newItem => {
+				const existingItem = existingItemsMap.get(newItem.id)
+
+				if (existingItem) {
+					if (JSON.stringify(existingItem) === JSON.stringify(newItem)) {
+						return existingItem
+					}
+				}
+
+				return newItem
+			})
+
+			state.items = updatedItems
+		},
 		setNextFetchAt(state, { payload }) {
 			state.nextFetchAt = payload
+		},
+		toggleItem(state, action) {
+			const id = action.payload
+			const currentItem = state.openItems[id]
+
+			if (currentItem) {
+				state.openItems[id].isOpen = !currentItem.isOpen
+			} else {
+				state.openItems[id] = {
+					isOpen: true,
+					chartRange: null
+				}
+			}
+		},
+		setChartRange(state, { payload: { id, range } }) {
+			if (state.openItems[id]) {
+				state.openItems[id].chartRange = range
+			}
+		},
+		resetOpenItems(state) {
+			state.openItems = {}
 		}
-	},
-	extraReducers: (builder) => {
-		builder.addCase(fetchItems.pending, (state) => {
-			state.status = state.items.length > 0 ? 'refreshing' : 'loading'
-			state.error = null
-		})
-		builder.addCase(fetchItems.fulfilled, (state, { payload }) => {
-			state.status = 'success'
-			state.items = payload
-			state.error = null
-		})
-		builder.addCase(fetchItems.rejected, (state, { error }) => {
-			state.status = 'error'
-			state.error = error.message || 'Неизвестная ошибка'
-		})
 	},
 })
 
-export const { setNextFetchAt } = itemsSlice.actions
+export const { setItems, setNextFetchAt, toggleItem, setChartRange, resetOpenItems } = itemsSlice.actions
 export default itemsSlice.reducer

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-	setStrategy, toggleExchange, setMValue,
+	setStrategy, toggleExchange, setHValue, setMValue,
 	setSearch, setDiffIntervals
 } from '../../redux/filters/slice'
 
@@ -11,17 +11,20 @@ import { useNow } from '../../hooks/useNow'
 import { useResponsiveText } from '../../hooks/useResponsiveText'
 import { useElementHeightVar } from '../../hooks/useElementHeightVar'
 
+import { getFiltersConfig } from '../../utils/getFiltersConfig'
+
 import { selectNextFetchAt } from '../../redux/items/selectors'
-import { selectFilters } from '../../redux/filters/selectors'
+import { selectNamespace, selectFilters } from '../../redux/filters/selectors'
 
 import debounce from '../../utils/debounce'
 
 import Fasteners from '../Fasteners/Fasteners'
 import Icon from '../Icon/Icon'
-import Button from '../Buttons/Button'
 import Dropdown from '../Dropdown/Dropdown'
 import Input from '../Input/Input'
 import Switcher from '../Switcher/Switcher'
+
+import SearchTime from './SearchTime'
 
 import styles from './Filters.module.scss'
 
@@ -45,31 +48,40 @@ const DROPDOWN_EXCHANGES = [
 	{ icon: 'ourbit', label: 'Ourbit', selected: false }
 ]
 
-const Filters = ({
-	showStrategy = false,
-	showExchanges = true,
-	showSwitcher = true,
-}) => {
+const Filters = () => {
 	const dispatch = useDispatch()
-	const { strategy, exchanges, mValue, search, diffIntervals } = useSelector(selectFilters)
+	const namespace = useSelector(selectNamespace)
+	const { strategy, exchanges, hValue, mValue, search, diffIntervals } = useSelector(selectFilters)
 	const nextFetchAt = useSelector(selectNextFetchAt)
 	const now = useNow()
+
+	const { showStrategy, showExchanges, showSwitcher, showSearchHours, showSearchMinutes } = getFiltersConfig(namespace)
+
 	const secondsLeft = nextFetchAt
-		? Math.max(Math.ceil(nextFetchAt - now), 0)
+		? Math.max(nextFetchAt - now, 0)
 		: 15
 
 	const [searchState, setSearchState] = React.useState({
 		searchValue: search,
+		searchHValue: hValue,
 		searchMValue: mValue,
 	})
 
 	React.useEffect(() => {
-		setSearchState({ searchValue: search, searchMValue: mValue })
-	}, [search, mValue])
+		setSearchState({ searchValue: search, searchHValue: hValue, searchMValue: mValue })
+	}, [search, hValue, mValue])
 
 	const searchPlaceholder = useResponsiveText(992, 'Поиск криптовалюты', 'Поиск')
 	const switcherText = useResponsiveText(992, 'Разные интервалы', '+ / -')
 	const filtersRef = useElementHeightVar('--filters-height')
+
+	const debouncedSetH = React.useMemo(
+		() => debounce((value) => {
+			const numeric = value.replace(/\D/g, '')
+			dispatch(setHValue(numeric))
+		}, 300),
+		[dispatch]
+	)
 
 	const debouncedSetM = React.useMemo(
 		() => debounce((value) => {
@@ -114,28 +126,37 @@ const Filters = ({
 						)
 					}
 
-					<div className={styles['input-number']}>
-						<Input
-							className={styles['input-number-input']}
-							placeholder='0'
-							hasReset={false}
-							value={searchState.searchMValue}
-							maxLength={2}
-							onChange={(e) => {
-								const value = e.target.value.replace(/\D/g, '')
-								setSearchState(prev => ({
-									...prev,
-									searchMValue: value
-								}))
-								debouncedSetM(value)
-							}} />
-						<Button
-							size={'base'}
-							typestyle={'secondary'}
-							className={styles['input-number-button']}>
-							H
-						</Button>
-					</div>
+					{
+						showSearchHours && (
+							<SearchTime
+								value={searchState.searchHValue}
+								onValueChange={value => {
+									setSearchState(prev => ({
+										...prev,
+										searchHValue: value
+									}))
+									debouncedSetH(value)
+								}}
+								label='H'
+							/>
+						)
+					}
+
+					{
+						showSearchMinutes && (
+							<SearchTime
+								value={searchState.searchMValue}
+								onValueChange={value => {
+									setSearchState(prev => ({
+										...prev,
+										searchMValue: value
+									}))
+									debouncedSetM(value)
+								}}
+								label='M'
+							/>
+						)
+					}
 
 					<div className={styles['filters-block']}>
 						<Input

@@ -1,52 +1,77 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector, shallowEqual } from 'react-redux'
 import { Virtuoso } from 'react-virtuoso'
 import clsx from 'clsx'
 
+import { COLUMNHEADER_MAP } from '../../constants/tableHeaders'
+
+import { useItems } from '../../hooks/useItems'
 import { useYmLink } from '../../hooks/useYmLink'
 import { useScrollbarWidth } from '../../hooks/useScrollbarWidth'
 
-import { fetchItems, setNextFetchAt } from '../../redux/items/slice'
-import { selectStatus, selectVisibleItems, selectError } from '../../redux/items/selectors'
+import { selectVisibleItems } from '../../redux/items/selectors'
+import { selectNamespace } from '../../redux/filters/selectors'
 
 import TableScrollbar from './TableScrollbar'
 import TableHeader from './TableHeader'
+import Row from '../TableRow/Row'
 import RowSkeleton from '../TableRow/RowSkeleton'
 
 import styles from './Table.module.scss'
 
+const DEFAULT_COLUMNS = COLUMNHEADER_MAP['home']
+
 const DEFAULT_SKELETONS = 18
 
-const Table = ({
-	arrayColumnHeader,
-	RowComponent,
-}) => {
-	const dispatch = useDispatch()
-	const items = useSelector(selectVisibleItems)
-	const status = useSelector(selectStatus)
-	const error = useSelector(selectError)
+const Table = () => {
+	const namespace = useSelector(selectNamespace)
 
-	React.useEffect(() => {
-		const POLL_INTERVAL = 15
-		let intervalId
+	const arrayColumnHeader = COLUMNHEADER_MAP[namespace.toLowerCase()] || DEFAULT_COLUMNS
 
-		const poll = async () => {
-			const nowSec = Math.floor(Date.now() / 1000)
-			dispatch(setNextFetchAt(nowSec + POLL_INTERVAL))
-			try {
-				await dispatch(fetchItems()).unwrap()
-			} catch (err) { }
+	const items = useSelector(selectVisibleItems, shallowEqual)
+	const {
+		isLoading,
+		isError,
+		isFetching,
+		error,
+	} = useItems()
+
+
+	const isInitialLoad = isLoading && items.length === 0
+	const isEmpty = !isLoading && items.length === 0
+
+	const virtuosoData = React.useMemo(() => {
+		if (isInitialLoad) {
+			return ['header', ...Array(DEFAULT_SKELETONS).fill(undefined)]
 		}
+		return ['header', ...items]
+	}, [isInitialLoad, items])
 
-		poll()
-		intervalId = setInterval(poll, POLL_INTERVAL * 1000)
+	const computeItemKey = React.useMemo(() =>
+		(index, item) => {
+			if (item === 'header') return 'header'
+			if (isInitialLoad) return `skeleton-${index}`
+			return item.id
+		},
+		[isInitialLoad]
+	)
 
-		return () => clearInterval(intervalId)
-	}, [dispatch])
+	const itemContent = React.useMemo(() =>
+		(index, item) => {
+			const isEvenRow = index % 2 === 1
 
-	const isLoading = status === 'loading'
-	const isRefreshing = status === 'refreshing'
-	const isInitial = isLoading && items.length === 0
+			if (item === 'header') {
+				return <TableHeader className={styles['row']} />
+			}
+
+			return (
+				<div className={clsx(styles.row, isEvenRow && styles.even)}>
+					{isInitialLoad ? <RowSkeleton /> : <Row {...item} />}
+				</div>
+			)
+		},
+		[isInitialLoad]
+	)
 
 	useScrollbarWidth()
 	useYmLink('on_click_link')
@@ -55,58 +80,50 @@ const Table = ({
 		<section className={styles['table-section']}>
 			<div className='container'>
 
-				{status === 'error' && (
+				{isError && (
 					<div className={styles['message']}>
-						Ошибка загрузки данных: {error}. Попробуйте позже.
+						Ошибка загрузки данных: {error?.message || 'Неизвестная ошибка. Попробуйте позже.'}
 					</div>
 				)}
 
 
-				{(status === 'success' || isRefreshing || isLoading) && (
-					items.length === 0 && !isInitial ? (
-						<div className={styles['message']}>
-							Ничего не найдено
-						</div>
-					) : (
-						<Virtuoso
-							role='table'
-							className={clsx(
-								styles['table'],
-								arrayColumnHeader && arrayColumnHeader.length === 7 && styles['table-cols-7'],
-								'scrollable'
-							)}
-							data={['header', ...(isInitial ? Array(DEFAULT_SKELETONS).fill(undefined) : items)]}
-							topItemCount={1}
-							computeItemKey={(index, item) =>
-								item === 'header'
-									? 'header' : isInitial
-										? `skeleton-${index}` : item.id
-							}
-							components={{
-								Scroller: TableScrollbar,
-								List: React.forwardRef((props, ref) => (
-									<div
-										role="rowgroup"
-										className={styles['table-body']}
-										{...props}
-										ref={ref}
-									/>
-								)),
-								Item: React.forwardRef((props, ref) => (
-									<div role="row" className={styles.row} {...props} ref={ref} />
-								)),
-							}}
-							itemContent={(_, item) => {
-								if (item === 'header') {
-									return <TableHeader arrayColumnHeader={arrayColumnHeader} className={styles['row']} />
-								}
+				{!isLoading && !isError && isEmpty && (
+					<div className={styles['message']}>
+						Ничего не найдено
+					</div>
+				)}
 
-								return isInitial
-									? <RowSkeleton />
-									: <RowComponent {...item} />
-							}}
-						/>
-					)
+				{!isError && !isEmpty && (
+					<Virtuoso
+						role='table'
+						className={clsx(
+							styles['table'],
+							arrayColumnHeader && arrayColumnHeader.length === 7 && styles['table-cols-7'],
+							'scrollable'
+						)}
+						data={virtuosoData}
+						topItemCount={1}
+						computeItemKey={computeItemKey}
+						components={{
+							Scroller: TableScrollbar,
+							List: React.forwardRef((props, ref) => (
+								<div
+									role="rowgroup"
+									className={styles['table-body']}
+									{...props}
+									ref={ref}
+								/>
+							)),
+							Item: React.forwardRef((props, ref) => (
+								<div role="row" className={styles.row} {...props} ref={ref} />
+							)),
+						}}
+						itemContent={itemContent}
+					/>
+				)}
+
+				{isFetching && !isInitialLoad && (
+					<div className={styles['message']}>Обновление данных…</div>
 				)}
 			</div>
 		</section>

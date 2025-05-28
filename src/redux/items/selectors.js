@@ -2,20 +2,28 @@ import { createSelector } from '@reduxjs/toolkit'
 
 import { selectFilters } from '../filters/selectors'
 
-const selectItemsObject = (state) => state.items.items
-export const selectStatus = (state) => state.items.status
+export const selectItemsArray = (state) => state.items.items
 export const selectNextFetchAt = (state) => state.items.nextFetchAt
-export const selectError = (state) => state.items.error
+export const selectOpenItems = (state) => state.items.openItems
 
-export const selectItems = createSelector(
-	[selectItemsObject],
-	itemsObject =>
-		Object.entries(itemsObject)
-			.map(([id, item]) => ({ ...item, id }))
+export const selectOpenRows = createSelector(
+	[selectOpenItems],
+	(openItems) => {
+		const openRows = {}
+		Object.keys(openItems).forEach(id => {
+			openRows[id] = openItems[id]?.isOpen || false
+		})
+		return openRows
+	}
+)
+
+export const selectChartRange = (id) => createSelector(
+	[selectOpenItems],
+	(openItems) => openItems[id]?.chartRange || null
 )
 
 export const selectVisibleItems = createSelector(
-	[selectItems, selectFilters],
+	[selectItemsArray, selectFilters],
 	(items, filters) => {
 		const dir = filters.sortDir === 'asc' ? 1 : -1
 		const extreme = dir === 1 ? Math.min : Math.max
@@ -64,10 +72,10 @@ export const selectVisibleItems = createSelector(
 			})
 		}
 
-		// 4) Фильтр по времени
-		if (filters.mValue) {
+		// 4) Фильтр по времени часы
+		if (filters.hValue) {
 			const now = Math.floor(Date.now() / 1000)
-			const mValueSeconds = Number(filters.mValue) * 3600
+			const hValueSeconds = Number(filters.hValue) * 3600
 
 			result = result.filter(item => {
 				const [p0, p1] = item.pairs
@@ -76,9 +84,20 @@ export const selectVisibleItems = createSelector(
 				return (
 					p0TimeLeft > 0 &&
 					p1TimeLeft > 0 &&
-					p0TimeLeft <= mValueSeconds &&
-					p1TimeLeft <= mValueSeconds
+					p0TimeLeft <= hValueSeconds &&
+					p1TimeLeft <= hValueSeconds
 				)
+			})
+		}
+
+		// 5) Фильтр по времени минуты
+		if (filters.mValue) {
+			const now = Math.floor(Date.now() / 1000)
+			const mValueSeconds = Number(filters.mValue) * 60
+
+			result = result.filter(item => {
+				const age = now - item.date_added
+				return age <= mValueSeconds
 			})
 		}
 
@@ -92,6 +111,11 @@ export const selectVisibleItems = createSelector(
 				case 'priceDiff': {
 					const aVal = extreme(a.pairs[0].price, a.pairs[1].price)
 					const bVal = extreme(b.pairs[0].price, b.pairs[1].price)
+					return dir * (aVal - bVal)
+				}
+				case 'orderbook': {
+					const aVal = extreme(a.pairs[0].orderbook_volume_usd)
+					const bVal = extreme(b.pairs[0].orderbook_volume_usd)
 					return dir * (aVal - bVal)
 				}
 				case 'fundingDiff': {
@@ -108,6 +132,19 @@ export const selectVisibleItems = createSelector(
 					return dir * (a.f_spread - b.f_spread)
 				case 'open_spread':
 					return dir * (a.open_spread - b.open_spread)
+				case 'profit':
+					const getLast = (obj) => {
+						const times = Object.keys(obj)
+							.map(t => parseInt(t, 10))
+							.sort((a, b) => a - b)
+						if (times.length === 0) return 0
+						return obj[times[times.length - 1]]
+					}
+					const aLast = getLast(a.open_spread)
+					const bLast = getLast(b.open_spread)
+					return dir * (aLast - bLast)
+				case 'date_added':
+					return (dir * (a.date_added - b.date_added))
 				default:
 					return 0
 			}

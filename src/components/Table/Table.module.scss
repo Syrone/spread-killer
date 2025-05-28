@@ -53,6 +53,10 @@
 
 	@include mixins.transition;
 
+	> .row {
+		border-bottom: none;
+	}
+
 	&.even {
 		background-color: var(--theme-border-rgba-03);
 	}

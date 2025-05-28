@@ -1,24 +1,22 @@
 import { useDispatch, useSelector } from 'react-redux'
 
+import { COLUMNHEADER_MAP  } from '../../constants/tableHeaders'
+
 import { setSort } from '../../redux/filters/slice'
-import { selectFilters } from '../../redux/filters/selectors'
+import { selectNamespace, selectFilters } from '../../redux/filters/selectors'
 
 import ColumnHeader from './ColumnHeader'
 
 import styles from './TableHeader.module.scss'
 
-const COLUMNHEADER_ARRAY = [
-	{ key: 'coin', label: 'Монета', popover: false, sort: true },
-	{ key: 'priceDiff', label: 'Связка', popover: false, sort: true },
-	{ key: 'fundingDiff', label: 'Фандинг', popover: 'Плата между трейдерами за удержание позиции.', sort: true },
-	{ key: 'fundingTime', label: 'Фандинг [24ч]', popover: 'Прогнозируемая суточная ставка, если текущий фандинг сохранится.', sort: true },
-	{ key: 'f_spread', label: 'F Spread', popover: 'Разница между фандингами на двух биржах.', sort: true },
-	{ key: 'open_spread', label: 'Open Spread', popover: 'Разница между ценами на одну и ту же монету на двух биржах.', sort: true },
-]
+const DEFAULT_COLUMNS = COLUMNHEADER_MAP['home']
 
-const TableHeader = ({ arrayColumnHeader = COLUMNHEADER_ARRAY, className }) => {
+const TableHeader = ({ className }) => {
 	const dispatch = useDispatch()
+	const namespace = useSelector(selectNamespace)
 	const { sortBy, sortDir } = useSelector(selectFilters)
+
+	const arrayColumnHeader = COLUMNHEADER_MAP[namespace.toLowerCase()] || DEFAULT_COLUMNS
 
 	return (
 		<div role='rowgroup' className={styles['table-header']}>

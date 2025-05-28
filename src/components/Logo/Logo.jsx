@@ -1,17 +1,16 @@
-import React from 'react'
 import clsx from 'clsx'
 
 import logo from '../../assets/images/logo.png'
 import logoWebp from '../../assets/images/logo.webp'
-
 import WebpImage from '../WebpImage/WebpImage'
+
+import ButtonLink from '../Buttons/ButtonLink'
 
 import styles from './Logo.module.scss'
 
 export default function Logo({ className, ...props }) {
 	return (
-		<a
-			href="/"
+		<ButtonLink
 			className={clsx(
 				styles['logo'],
 				className
@@ -22,6 +21,6 @@ export default function Logo({ className, ...props }) {
 				<span>SKiller</span>
 				<span>SKiller</span>
 			</span>
-		</a>
+		</ButtonLink>
 	)
 }
