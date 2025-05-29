@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/spread-killer/static/css/main.cda08aab.css",
-    "main.js": "/spread-killer/static/js/main.8e1d58eb.js",
+    "main.css": "/spread-killer/static/css/main.f5f4fc66.css",
+    "main.js": "/spread-killer/static/js/main.4094f1f3.js",
     "static/media/smoke-dark-theme.webp": "/spread-killer/static/media/smoke-dark-theme.d4455332cfe7954a3068.webp",
     "static/media/smoke-light-theme.webp": "/spread-killer/static/media/smoke-light-theme.4fea9954f7c42c1c4d12.webp",
     "static/media/logo.webp": "/spread-killer/static/media/logo.cdc4da913cbee698dc57.webp",
@@ -37,11 +37,11 @@
     "static/media/menu.svg": "/spread-killer/static/media/menu.463e4b3bcde5bcb34d69dcc6289ca71e.svg",
     "static/media/check.svg": "/spread-killer/static/media/check.08ce831ff290e5a1d003d33378bdff87.svg",
     "static/media/minus.svg": "/spread-killer/static/media/minus.68f4efc6146297354f9ed43b17f99f32.svg",
-    "main.cda08aab.css.map": "/spread-killer/static/css/main.cda08aab.css.map",
-    "main.8e1d58eb.js.map": "/spread-killer/static/js/main.8e1d58eb.js.map"
+    "main.f5f4fc66.css.map": "/spread-killer/static/css/main.f5f4fc66.css.map",
+    "main.4094f1f3.js.map": "/spread-killer/static/js/main.4094f1f3.js.map"
   },
   "entrypoints": [
-    "static/css/main.cda08aab.css",
-    "static/js/main.8e1d58eb.js"
+    "static/css/main.f5f4fc66.css",
+    "static/js/main.4094f1f3.js"
   ]
 }
