@@ -253,6 +253,10 @@
 		}
 	}
 
+	&-lifetime {
+		white-space: nowrap;
+	}
+
 	&-chart {
 		position: relative;
 		z-index: 0;
